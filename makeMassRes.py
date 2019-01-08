@@ -694,7 +694,8 @@ if __name__ == "__main__":
 
 	print ("Running on: %s " %(inputfiles))
 	print ("Saving result in: %s" %(output))
-	tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+	# ~ tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+	tracks = ["TunePNew"]
 	for trackType in tracks:
 		makeMassRes(inputfiles,output,args.funct,trackType,weights)
 	print ("DONE")

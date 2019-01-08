@@ -1,4 +1,4 @@
-from ROOT import *
+from ROOT import TGraphAsymmErrors, TCanvas, TPad, TGraphErrors, gStyle, kRed, kBlue, TLatex, TLegend
 import pickle
 import math
 from setTDRStyle import setTDRStyle
@@ -80,12 +80,12 @@ def getGraph(result,label):
 
 def compareMassRes(trackType):
 	
-	file2016BB = open("default/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2016BE = open("default/MassResolutionVsMass_%s_BE.pkl"%trackType)
-	file2017BB = open("cruijff/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2017BE = open("cruijff/MassResolutionVsMass_%s_BE.pkl"%trackType)
-	fileCBB = open("crystal/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	fileCBE = open("crystal/MassResolutionVsMass_%s_BE.pkl"%trackType)
+	file2016BB = open("default/MassResolutionVsMass_%s_BB.pkl"%trackType,"rb")
+	file2016BE = open("default/MassResolutionVsMass_%s_BE.pkl"%trackType,"rb")
+	file2017BB = open("cruijff/MassResolutionVsMass_%s_BB.pkl"%trackType,"rb")
+	file2017BE = open("cruijff/MassResolutionVsMass_%s_BE.pkl"%trackType,"rb")
+	fileCBB = open("crystal/MassResolutionVsMass_%s_BB.pkl"%trackType,"rb")
+	fileCBE = open("crystal/MassResolutionVsMass_%s_BE.pkl"%trackType,"rb")
 
 	results2016BB = pickle.load(file2016BB)
 	results2016BE = pickle.load(file2016BE)
@@ -94,8 +94,6 @@ def compareMassRes(trackType):
 	resultsCBB = pickle.load(fileCBB)
 	resultsCBE = pickle.load(fileCBE)
 
-	print results2016BB
-	print results2017BB
 
 	graph2016BB = getGraph(results2016BB,"DCBBB")
 	graph2016BE = getGraph(results2016BE,"DCBBE")
@@ -286,6 +284,6 @@ def compareMassRes(trackType):
 	canv.Print("massResolutionCompareFunc_%s_BE.pdf"%trackType)
 
 
-tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+tracks = ["TunePNew"]
 for trackType in tracks:
 	compareMassRes(trackType)

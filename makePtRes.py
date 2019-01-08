@@ -84,7 +84,6 @@ def loadHistos(inputfiles,region,rebin,trackType,weights):
 	histoname = "Our2017MuonsPlusMuonsMinus%sResolutionMC"%trackType
 	
 	for k,mc in enumerate(_file):
-		#~ print _file[k].ls()
 		if ("BB" in region):
 			tmp   = _file[k].Get("%s/LeptonInvPtResVPtGen_2d_B" %(histoname)).Clone()
 		elif ("BE" in region):
@@ -93,19 +92,17 @@ def loadHistos(inputfiles,region,rebin,trackType,weights):
 		if k==0 and not weights: 
 			hmc = tmp
 		elif k==0 and weights:
-			print k
 			nEvents = _file[k].Get("EventCounter/Events").GetBinContent(1)
-			print "Weighting with %s " %(40000*weights[k]/nEvents)
+			print ("Weighting with %s " %(40000*weights[k]/nEvents))
 			tmp.Scale(40000*weights[k]/nEvents)
 			hmc = tmp
 		elif not weights:
 			hmc.Add(tmp)
 		else: 
 			nEvents = _file[k].Get("EventCounter/Events").GetBinContent(1)			
-			print "Weighting with %s " %(40000*weights[k]/nEvents)
+			print ("Weighting with %s " %(40000*weights[k]/nEvents))
 			tmp.Scale(40000*weights[k]/nEvents)
 			hmc.Add(tmp)
-	print hmc.GetEntries()
 		
 	for f in _file:
 		f.Close()
@@ -117,13 +114,11 @@ def loadHistos(inputfiles,region,rebin,trackType,weights):
 		
 	c1 = ROOT.TCanvas("c1","c1",700,700)
 	c1.cd()
-	print "hier", rebin
+	
 	for i,h in enumerate(histos): 
 		xmin,xmax = getBinRange(hmc,mrange[i],mrange[i+1])
-		print xmin, xmax
 		histos[i] = hmc.ProjectionY("res%s%s" %(mrange[i],region), xmin, xmax)
 		histos[i].Rebin(rebin)
-		print histos[i].Integral()
 		
 #        if (histos[i].Integral() < 5000): 
 #            histos[i].Rebin(2)
@@ -168,9 +163,9 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 			fit_min = FITMIN
 			fit_max = FITMAX
 
-		print "+++++++++++++++++++++++++++++++++++++++++"
-		print "Fitting histogram for %d < m_{ll} <%d, with Range=[%3.2f, %3.2f]" %(mrange[i],mrange[i+1],fit_min,fit_max)
-		print "+++++++++++++++++++++++++++++++++++++++++\n"
+		print ("+++++++++++++++++++++++++++++++++++++++++")
+		print ("Fitting histogram for %d < m_{ll} <%d, with Range=[%3.2f, %3.2f]" %(mrange[i],mrange[i+1],fit_min,fit_max))
+		print ("+++++++++++++++++++++++++++++++++++++++++\n")
 
  
 		# fit with a gaussian to use parameters of the fit for the CB...
@@ -180,18 +175,18 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 		
 		funct = ROOT.TF1()
 		if "cruijff" in fit: 
-			print ">>>>>> Using Cruijff >>>>>>>>"
+			print (">>>>>> Using Cruijff >>>>>>>>")
 			funct = ROOT.TF1(fit,ROOT.cruijff,fit_min,fit_max,5)
 			funct.SetParameters(gaus.GetParameter(0), gaus.GetParameter(1), gaus.GetParameter(2), 0., 0.) #15, 0.001)             
 			funct.SetParNames("Constant","Mean","Sigma","AlphaL","AlphaR")      
 		elif "gaus" in fit:	  
-			print ">>>>>> Using Gauss >>>>>>>>"
+			print (">>>>>> Using Gauss >>>>>>>>")
 			funct = ROOT.TF1(fit,"gaus",fit_min,fit_max)
 			funct.SetParameters(gaus.GetParameter(0), gaus.GetParameter(1), gaus.GetParameter(2)) #15, 0.001)             
 			funct.SetParNames("Constant","Mean","Sigma")        
 
 		elif "crystal" in fit: 
-			print ">>>>>>>>  Using CRYSTAL BALL >>>>>>>>"
+			print (">>>>>>>>  Using CRYSTAL BALL >>>>>>>>")
 			funct = ROOT.TF1(fit,"crystalball",fit_min,fit_max)
 			funct.SetParameters(gaus.GetParameter(0), gaus.GetParameter(1), gaus.GetParameter(2), 1.4, 1.5)
 #            funct.SetParLimits(1, gaus.GetParameter(1)*0.5, gaus.GetParameter(1)*1.5)
@@ -200,7 +195,7 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 			funct.SetParLimits(4, 0., 3.)
 
 		elif "doubleCB" in fit:
-			print ">>>>>>> Using Double Crystal Ball >>>>>>>"
+			print (">>>>>>> Using Double Crystal Ball >>>>>>>")
 			funct = ROOT.TF1(fit, ROOT.doubleCB, fit_min, fit_max, 7)
 			funct.SetParameters(gaus.GetParameter(0), gaus.GetParameter(1), gaus.GetParameter(2), 1.4, 1.4, 1.5, 1.5)
 			funct.SetParLimits(2, 0, 2.5*h.GetRMS())
@@ -210,7 +205,7 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 			funct.SetParLimits(6, 0., 20.)
 			funct.SetParNames("Constant","Mean","Sigma","AlphaL","AlphaR","nL","nR")
 		elif "gaussExp" in fit:
-			print ">>>>>>> Using GaussExp >>>>>>>"
+			print (">>>>>>> Using GaussExp >>>>>>>")
 			funct = ROOT.TF1(fit, ROOT.gaussExp, fit_min, fit_max, 5)
 			funct.SetParameters(gaus.GetParameter(0), gaus.GetParameter(1), gaus.GetParameter(2), 0, 0)
 			funct.SetParLimits(2, 0, 2.5*h.GetRMS())
@@ -225,7 +220,7 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 
 		if syst: 
 			if ("cruijff" in fit): 
-				print ">>>>>>>>  Using DCB for systematics >>>>>>>>"
+				print (">>>>>>>>  Using DCB for systematics >>>>>>>>")
 				systfunc = ROOT.TF1("systfunc",ROOT.doubleCB, fit_min, fit_max, 7)
 				#~ systfunc.SetParameters(funct.GetParameter(0), funct.GetParameter(1), funct.GetParameter(2), 1.4, 2.)
 				systfunc.SetParameters(gaus.GetParameter(0), gaus.GetParameter(1), gaus.GetParameter(2), 1.4, 1.4, 1.5, 1.5)
@@ -237,7 +232,7 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 				systfunc.SetParNames("Constant","Mean","Sigma","AlphaL","AlphaR","nL","nR")
 			
 			elif ("crystal" in fit or "doubleCB" in fit or "gaussExp" in fit or "gaus" in fit): 
-				print ">>>>>>>>  Using CRUIJFF for systematics >>>>>>>>"
+				print (">>>>>>>>  Using CRUIJFF for systematics >>>>>>>>")
 				systfunc = ROOT.TF1("systfunc",ROOT.cruijff, h.GetMean() +xMinFactor*h.GetRMS(),  h.GetMean() +xMaxFactor*h.GetRMS(),5)
 				systfunc.SetParameters(funct.GetParameter(0), funct.GetParameter(1), funct.GetParameter(2), 0., 0.) #15, 0.001)             
 				systfunc.SetParNames("Constant","Mean","Sigma","AlphaL","AlphaR")        
@@ -245,7 +240,7 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 			h.Fit("systfunc","M0R+")
 			
 		if "doubleCB" in fit: 
-			print ">>>>>>>>  Using CB for additional systematics >>>>>>>>"
+			print (">>>>>>>>  Using CB for additional systematics >>>>>>>>")
 			systfunc2 = ROOT.TF1("systfunc2","crystalball", h.GetMean() - 2.3*h.GetRMS() , h.GetMean() + 2.0*h.GetRMS() )
 			systfunc2.SetParameters(gaus.GetParameter(0), gaus.GetParameter(1), gaus.GetParameter(2), 1.4, 1.5)
 #            funct.SetParLimits(1, gaus.GetParameter(1)*0.5, gaus.GetParameter(1)*1.5)
@@ -349,13 +344,13 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 		c1.Print(output+saveas+".png")
 		c1.Print(output+saveas+".pdf")
 		
-	print "DONE Fitting..."
+	print ("DONE Fitting...")
 	return pars,errs,chi2
 
 def doFitWithSyst(hist,output,nrms,rapidity):
-	print "######################################################"
-	print "### FITTING HISTOS AND COMPUTING SYST  ERRORS      ###"
-	print "######################################################"
+	print ("######################################################")
+	print ("### FITTING HISTOS AND COMPUTING SYST  ERRORS      ###")
+	print ("######################################################")
 	(sig     ,err,alp     ,aer,n     ,nerr) = doFit(hist,output,nrms,rapidity)
 	(sig_down,_  ,alp_down,_  ,n_down,_   ) = doFit(hist,output,nrms*0.75,rapidity)
 	(sig_up  ,_  ,alp_up  ,_  ,n_up  ,_   ) = doFit(hist,output,nrms*1.25,rapidity)
@@ -373,9 +368,9 @@ def doFitWithSyst(hist,output,nrms,rapidity):
 		sys     = sys*n[i]
 		nerr[i] = math.sqrt(sys*sys+aer[i]*aer[i])
 
-	print "############"
-	print "### DONE ###"
-	print "############"
+	print ("############")
+	print ("### DONE ###")
+	print ("############")
 	return sig,err,alp,aer,n,nerr
 	
 
@@ -402,7 +397,7 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 		fun.ReleaseParameter(i)
 		fun.SetParameter(i,0.)
 
-	param = [ROOT.TGraphErrors(len(mass)) for x in range((len(pars)/len(mass))+1)] 
+	param = [ROOT.TGraphErrors(len(mass)) for x in range(int(len(pars)/len(mass))+1)] 
 	res = ROOT.TGraphErrors(len(mass))
 	
 	result = {}
@@ -446,7 +441,6 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 				elif "Mean" in f.GetName():
 					result["mean"].append(pars[i*nPar+k])
 					result["meanErr"].append(errs[i*nPar+k])
-		print result
 		if ("Sigma" in f.GetName()):
 			res = param[k]
 
@@ -481,7 +475,7 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 		
 		if ("chi2" not in f.GetName()): 
 			if ("Sigma" in f.GetName()):  
-				print "Fitting Sigma"
+				print ("Fitting Sigma")
 				fun.SetParameters(0.,1E-5,-1.E-8,2E-12,-2E-16)
 				fun.SetParLimits(1, 1.0E-6, 1.0E-4)
 				fun.SetParLimits(2,-1.0E-7,-1.0E-9)
@@ -558,7 +552,7 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 	
 		ROOT.gPad.Update()
 		c2.Clear()
-	pklFile = open(output+"/PtResolutionVsPt_%s_%s.pkl" %(trackType,rapidity),"w")
+	pklFile = open(output+"/PtResolutionVsPt_%s_%s.pkl" %(trackType,rapidity),"wb")
 	pickle.dump(result,pklFile)
 	pklFile.close()	
 
@@ -697,7 +691,6 @@ if __name__ == "__main__":
 
 	xMinFactor = args.xMinFac
 	xMaxFactor = args.xMaxFac
-	print "blubb", args.rebin
 	rebin = args.rebin
 
 	if not os.path.exists(args.output):
@@ -707,9 +700,9 @@ if __name__ == "__main__":
 	if args.weight:
 		weights = xSecs[args.inputfile]
 
-	print "Running on: %s " %(inputfiles)
-	print "Saving result in: %s" %(output)
+	print ("Running on: %s " %(inputfiles))
+	print ("Saving result in: %s" %(output))
 	tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
 	for trackType in tracks:
 		makeMassRes(inputfiles,output,args.funct,trackType,weights)
-	print "DONE"
+	print ("DONE")

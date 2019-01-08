@@ -11,7 +11,7 @@ from setTDRStyle import setTDRStyle
 oldargv = sys.argv[:]
 sys.argv = [ '-b-' ]
 #~ import ROOT
-from ROOT import *
+from ROOT import TCanvas, gROOT, gStyle, TFile, TH2F, TH1, kFALSE, TH1D, gSystem, RooWorkspace, RooRealVar, RooCmdArg, RooDataHist, RooArgList, TPad, TLegend, TLatex, TGraphAsymmErrors, TGraph, TGraphErrors, kBlack, kRed, kBlue, TLine
 gROOT.SetBatch(True)
 sys.argv = oldargv
 
@@ -34,8 +34,8 @@ sampleLists  = {
 	"2017MassBinned":["dileptonAna_resolution_dy50to120_2017.root","dileptonAna_resolution_dy120to200_2017.root","dileptonAna_resolution_dy200to400_2017.root","dileptonAna_resolution_dy400to800_2017.root","dileptonAna_resolution_dy800to1400_2017.root","dileptonAna_resolution_dy1400to2300_2017.root","dileptonAna_resolution_dy2300to3500_2017.root","dileptonAna_resolution_dy3500to4500_2017.root","dileptonAna_resolution_dy4500to6000_2017.root","dileptonAna_resolution_dy6000toInf_2017.root"],
 	"2018MassBinned":["dileptonAna_resolution_2018_dy50to120.root","dileptonAna_resolution_2018_dy120to200.root","dileptonAna_resolution_2018_dy200to400.root","dileptonAna_resolution_2018_dy400to800.root","dileptonAna_resolution_2018_dy800to1400.root","dileptonAna_resolution_2017_dy1400to2300.root","dileptonAna_resolution_2018_dy2300to3500.root","dileptonAna_resolution_2017_dy3500to4500.root","dileptonAna_resolution_2018_dy4500to6000.root","dileptonAna_resolution_2017_dy6000toInf.root"],
 	"2016PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_2016_dyPt50To100.root","dileptonAna_resolution_2016_dyPt100To250.root","dileptonAna_resolution_2016_dyPt250To400.root","dileptonAna_resolution_2016_dyPt400To600.root","dileptonAna_resolution_2016_dyPt650ToInf.root"],
-	"2017PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_dyPt50To150_1Jet_2017.root","dileptonAna_resolution_dyPt50To150_2Jets_2017.root","dileptonAna_resolution_dyPt150To250_1Jet_2017.root","dileptonAna_resolution_dyPt150To250_2Jets_2017.root","dileptonAna_resolution_dyPt250To400_1Jet_2017.root","dileptonAna_resolution_dyPt250To400_2Jets_2017.root","dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root","dileptonAna_resolution_dy_3Jets_2017.root","dileptonAna_resolution_dy_4Jets_2017.root"]
-	"2017PtBinned":["dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root"]
+	"2017PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_dyPt50To150_1Jet_2017.root","dileptonAna_resolution_dyPt50To150_2Jets_2017.root","dileptonAna_resolution_dyPt150To250_1Jet_2017.root","dileptonAna_resolution_dyPt150To250_2Jets_2017.root","dileptonAna_resolution_dyPt250To400_1Jet_2017.root","dileptonAna_resolution_dyPt250To400_2Jets_2017.root","dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root","dileptonAna_resolution_dy_3Jets_2017.root","dileptonAna_resolution_dy_4Jets_2017.root"],
+#	"2017PtBinned":["dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root"]
 
 }
 
@@ -47,8 +47,49 @@ xSecs = {
 	"2017MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2016PtBinned": [1921.8,363.81428,84.014804,3.228256512,0.436041144,0.040981055],
 	"2017PtBinned": [1921.8,491.5,587.8599,27.31,10.99,6.068,5.917,2.536,2.536,119.6,40.44]	
-	"2017PtBinned": [2.536,2.536]	
-}
+#	"2017PtBinned": [2.536,2.536]	
+}#    
+#    resBB.SetMarkerStyle(22)
+#    resBB.SetMarkerColor(kRed)
+#    resBB.SetLineColor(kRed)
+#    resBB.SetFillColor(0)
+#    resBB.SetTitle("Dimuon mass resolution vs pT")
+#    resBB.GetYaxis().SetTitle("Dimuon Mass Resolution")
+#    resBB.GetYaxis().SetTitleOffset(1.5)
+#    resBB.GetXaxis().SetTitle("p_T (#mu^{#pm}) [GeV]")
+#    resBB.GetYaxis().SetRangeUser(0,.2)
+#    resBB.GetXaxis().SetRangeUser(0,5000)
+#    resBB.GetFunction("fun").SetLineColor(kRed+1)
+#    resBB.Draw("AP E0")
+#    
+#    resBE.SetMarkerStyle(22)
+#    resBE.SetMarkerColor(kBlue+1)
+#    resBE.SetLineColor(kBlue+1)
+#    resBE.SetFillColor(0)
+#    resBE.SetTitle("Dimuon mass resolution vs mass")
+#    resBE.GetYaxis().SetTitle("Dimuon Mass Resolution")
+#    resBE.GetYaxis().SetTitleOffset(1.5)
+#    resBE.GetXaxis().SetTitle("p_T (#mu^{#pm}) [GeV]")
+#    resBE.GetYaxis().SetRangeUser(0,.2)
+#    resBE.GetXaxis().SetRangeUser(0,5000)
+#    resBE.GetFunction("fun").SetLineColor(kBlue+2)
+#    resBE.Draw("PE0 SAME")
+#        
+#    leg = TLegend(.35,.7,.50,.80,"","brNDC")
+#    leg.AddEntry(resBB,"BB")
+#    leg.AddEntry(resBE,"BE")
+#    leg.SetTextFont(42)
+#    leg.SetBorderSize(0)
+#    leg.SetTextSize(.02)
+#    leg.Draw("SAME")
+#    
+#    res.SetGrid()
+#    saveas = "/MassResolutionVsPt_2CAT"
+#    res.SaveAs(output+saveas+".png")
+#    res.SaveAs(output+saveas+".pdf")
+#    res.SaveAs(output+saveas+".root")
+#    res.SaveAs(output+saveas+".C")
+
 
 
 def getBinRange(histo,mlow,mhigh,reg="BB"):
@@ -99,18 +140,17 @@ def loadHistos(inputdata,inputMC,region,weights,weights2,trackType,mcIsData,data
 				hdata = tmp
 			elif k==0 and weights2:
 				nEvents = _fileDATA[k].Get("EventCounter/Events").GetBinContent(1)
-				print "Weighting with %s " %(40000*weights2[k]/nEvents)
+				print ("Weighting with %s " %(40000*weights2[k]/nEvents))
 				tmp.Scale(40000*weights2[k]/nEvents)
 				hdata = tmp
 			elif not weights2:
 				hdata.Add(tmp)
 			else: 
 				nEvents = _fileDATA[k].Get("EventCounter/Events").GetBinContent(1)			
-				print "Weighting with %s " %(40000*weights2[k]/nEvents)
+				print ("Weighting with %s " %(40000*weights2[k]/nEvents))
 				tmp.Scale(40000*weights2[k]/nEvents)
 				hdata.Add(tmp)
 
-	print len(_fileMC), len(weights)
 	if mcIsData:
 		hmc = _fileMC[0].Get("Our2017MuonsPlusMuonsMinus%sResolution/DileptonMass_2d_vsPt%s" %(trackType,reg)).Clone()
 	else:	
@@ -120,19 +160,17 @@ def loadHistos(inputdata,inputMC,region,weights,weights2,trackType,mcIsData,data
 			if k==0 and not weights: 
 				hmc = tmp
 			elif k==0 and weights:
-				print k
 				nEvents = _fileMC[k].Get("EventCounter/Events").GetBinContent(1)
-				print "Weighting with %s " %(40000*weights[k]/nEvents)
+				print ("Weighting with %s " %(40000*weights[k]/nEvents))
 				tmp.Scale(40000*weights[k]/nEvents)
 				hmc = tmp
 			elif not weights:
 				hmc.Add(tmp)
 			else: 
 				nEvents = _fileMC[k].Get("EventCounter/Events").GetBinContent(1)			
-				print "Weighting with %s " %(40000*weights[k]/nEvents)
+				print ("Weighting with %s " %(40000*weights[k]/nEvents))
 				tmp.Scale(40000*weights[k]/nEvents)
 				hmc.Add(tmp)
-		print hmc.GetEntries()
 		
 	for f in _fileDATA:
 		f.Close()
@@ -261,9 +299,8 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	result["mc_nChi2"] = mc_nChi2
 
 
-	print da_sig, mc_sig
 
-	pklFile = open(output+"/MassResolutionVsPt_%s_%s.pkl" %(trackType,rapidity),"w")
+	pklFile = open(output+"/MassResolutionVsPt_%s_%s.pkl" %(trackType,rapidity),"wb")
 	pickle.dump(result,pklFile)
 	pklFile.close()
 	
@@ -306,7 +343,6 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 		res_data.GetYaxis().SetRangeUser(1.,20.)
 	res_data.GetXaxis().SetRangeUser(ptbins[0],ptbins[len(ptda)])
 	res_data.Draw("AP E0")
-	print "hier?"	
 	res_mc.SetMarkerStyle(22)
 	res_mc.SetMarkerColor(kRed)
 	res_mc.SetLineColor(kRed)
@@ -315,9 +351,7 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	res_mc.GetYaxis().SetTitle("Mass resolution at Z peak [GeV]")
 	res_mc.GetYaxis().SetTitleOffset(1.5)
 	res_mc.Draw("P E0 SAME")
-	#~ print "hier?"
 	leg = TLegend(0.35,0.7,0.50,0.80,"","brNDC")
-	#~ print "???"
 	if mcIsData:
 		leg.AddEntry(res_data,"DATA 2017")
 		leg.AddEntry(res_mc,"DATA 2016")
@@ -327,7 +361,6 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	else:
 		leg.AddEntry(res_data,"DATA","p")
 		leg.AddEntry(res_mc,"Simulation")
-	print "hier?"
 	
 	leg.SetTextFont(42)
 	leg.SetBorderSize(0)
@@ -361,7 +394,6 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	pad2.Draw()
 	pad2.cd()
 	pad2.SetTicks()
-	print "hier?"
 	ratio.SetMarkerColor(kBlue-4)
 	ratio.SetFillColor(kBlue-4 )
 	ratio.SetTitle("")
@@ -380,7 +412,6 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	ratio.GetXaxis().SetTitleSize(0.2)
 	ratio.GetXaxis().SetTitleOffset(1.2)
 	ratio.GetXaxis().SetLabelSize(0.20)
-	print "hier?"		
 	ratio.Draw("A P E2")
 	pad2.Update()
 	line = TLine(ptbins[0],1,ptbins[len(ptda)],1)
@@ -394,20 +425,6 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	c2.SaveAs(output+saveas+".root")
 	c2.SaveAs(output+saveas+".C")
 	
-	# PRINT FIT RESULTS!!!
-	print "|--------------------------------------------------------------------------|"
-	print "|                   MASS RESOLUTION PARAMETRIZATION                        |"
-	print "|--------------------------------------------------------------------------|"
-	print "|      pT   %s      |      Mean:  Data / MC      |    Sigma: Data / MC     | " %(rapidity)
-	print "|--------------------------------------------------------------------------|"
-	
-	for i in range(0,len(ptda)):
-		if ptbins[i]>200 and rapidity=="E": break
-	if mc_mean[i] > 0:
-		print "| %4d < p_T < %4d |  %5.3f / %5.3f ( %5.3f ) | %5.3f / %5.3f ( %5.3f ) |" %(pt_x[i]-pt_e[i], pt_x[i]+pt_e[i],
-																					   da_mean[i], mc_mean[i], da_mean[i]/mc_mean[i],
-																						   da_sig[i], mc_sig[i], da_sig[i]/mc_sig[i])
-	print "|--------------------------------------------------------------------------|"
 
 	
 def makeMassRes(inputDATA,inputMC,output,weights,weights2,trackType,funct,mcIsData,dataIsMC):
@@ -424,47 +441,6 @@ def makeMassRes(inputDATA,inputMC,output,weights,weights2,trackType,funct,mcIsDa
 	drawMassRes(data_B,mc_B,output,"BB",ptdaB,ptmcB,trackType,funct,mcIsData,dataIsMC)
 	drawMassRes(data_E,mc_E,output,"BE",ptdaE,ptmcE,trackType,funct,mcIsData,dataIsMC)
 	
-#    
-#    resBB.SetMarkerStyle(22)
-#    resBB.SetMarkerColor(kRed)
-#    resBB.SetLineColor(kRed)
-#    resBB.SetFillColor(0)
-#    resBB.SetTitle("Dimuon mass resolution vs pT")
-#    resBB.GetYaxis().SetTitle("Dimuon Mass Resolution")
-#    resBB.GetYaxis().SetTitleOffset(1.5)
-#    resBB.GetXaxis().SetTitle("p_T (#mu^{#pm}) [GeV]")
-#    resBB.GetYaxis().SetRangeUser(0,.2)
-#    resBB.GetXaxis().SetRangeUser(0,5000)
-#    resBB.GetFunction("fun").SetLineColor(kRed+1)
-#    resBB.Draw("AP E0")
-#    
-#    resBE.SetMarkerStyle(22)
-#    resBE.SetMarkerColor(kBlue+1)
-#    resBE.SetLineColor(kBlue+1)
-#    resBE.SetFillColor(0)
-#    resBE.SetTitle("Dimuon mass resolution vs mass")
-#    resBE.GetYaxis().SetTitle("Dimuon Mass Resolution")
-#    resBE.GetYaxis().SetTitleOffset(1.5)
-#    resBE.GetXaxis().SetTitle("p_T (#mu^{#pm}) [GeV]")
-#    resBE.GetYaxis().SetRangeUser(0,.2)
-#    resBE.GetXaxis().SetRangeUser(0,5000)
-#    resBE.GetFunction("fun").SetLineColor(kBlue+2)
-#    resBE.Draw("PE0 SAME")
-#        
-#    leg = TLegend(.35,.7,.50,.80,"","brNDC")
-#    leg.AddEntry(resBB,"BB")
-#    leg.AddEntry(resBE,"BE")
-#    leg.SetTextFont(42)
-#    leg.SetBorderSize(0)
-#    leg.SetTextSize(.02)
-#    leg.Draw("SAME")
-#    
-#    res.SetGrid()
-#    saveas = "/MassResolutionVsPt_2CAT"
-#    res.SaveAs(output+saveas+".png")
-#    res.SaveAs(output+saveas+".pdf")
-#    res.SaveAs(output+saveas+".root")
-#    res.SaveAs(output+saveas+".C")
 	
 		 
 #### ========= MAIN =======================
@@ -514,8 +490,8 @@ if __name__ == "__main__":
 	xHigh = args.xMax
 
 		
-	print "Running on: %s %s with 2 categories" %(inputDATA,inputMC)
-	print "Saving result in: %s" %(output)
+	print ("Running on: %s %s with 2 categories" %(inputDATA,inputMC))
+	print ("Saving result in: %s" %(output))
 
 	tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
 	#~ tracks = ["TunePNew"]
@@ -530,4 +506,4 @@ if __name__ == "__main__":
 			weights2 = xSecs[args.inputMC2]
 	#~ for trackType in tracks:	
 	makeMassRes(inputDATA,inputMC,output,weights,weights2,args.track,args.funct,mcIsData,dataIsMC)
-	print "DONE"
+	print ("DONE")
