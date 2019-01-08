@@ -1,0 +1,9 @@
+*.root
+*.pkl
+*.d
+*.so
+*.pcm
+*.pyc
+*.pdf
+*.png
+*.C
