@@ -500,18 +500,18 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 				fun.SetParLimits(3,-1E-12,-5E-14)
 				fun.FixParameter(4,0.)
 				
-			f.Fit(fun,"MBFE+")            
-			fun.Draw("SAME")
+#			f.Fit(fun,"MBFE+")            
+#			fun.Draw("SAME")
 
 		
 			latexFit = ROOT.TLatex()
 			latexFit.SetTextFont(42)
 			latexFit.SetTextSize(0.030)
 			latexFit.SetNDC(True)        
-			for par in range(fun.GetNpar()):
-				yPos = 0.74-0.04*(float(par))
-				latexFit.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(fun.GetParName(par),fun.GetParameter(par),fun.GetParError(par)))
-			latexFit.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(fun.GetChisquare(),fun.GetNDF(),fun.GetChisquare()/fun.GetNDF()))
+#			for par in range(fun.GetNpar()):
+#				yPos = 0.74-0.04*(float(par))
+#				latexFit.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(fun.GetParName(par),fun.GetParameter(par),fun.GetParError(par)))
+#			latexFit.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(fun.GetChisquare(),fun.GetNDF(),fun.GetChisquare()/fun.GetNDF()))
 			
 		latex = ROOT.TLatex()
 		latex.SetTextFont(42)
@@ -581,7 +581,7 @@ def makeMassRes(inputfile,output,funct,trackType,weights):
 	resBB.GetXaxis().SetTitle("m(#mu^{+}#mu^{-}) [GeV]")
 	resBB.GetYaxis().SetRangeUser(0,.15)
 	resBB.GetXaxis().SetRangeUser(mrange[0],mrange[len(mrange)-1])
-	resBB.GetFunction("fun").SetLineColor(ROOT.kRed+1)
+	#resBB.GetFunction("fun").SetLineColor(ROOT.kRed+1)
 	resBB.Draw("AP E0")
 	
 	resBE.SetMarkerStyle(20)
@@ -595,7 +595,7 @@ def makeMassRes(inputfile,output,funct,trackType,weights):
  #   resBE.GetXaxis().SetTitle("m(#mu^{+}#mu^{-}) [GeV]")
 	resBE.GetYaxis().SetRangeUser(0,.15)
 	resBE.GetXaxis().SetRangeUser(mrange[0],mrange[len(mrange)-1])
-	resBE.GetFunction("fun").SetLineColor(ROOT.kGreen+2)
+	#resBE.GetFunction("fun").SetLineColor(ROOT.kGreen+2)
 	resBE.Draw("PE0 SAME")
 
 	latexFitBB = ROOT.TLatex()
@@ -611,12 +611,12 @@ def makeMassRes(inputfile,output,funct,trackType,weights):
 	latexFitBE.SetTextColor(ROOT.kGreen+2)
 	latexFitBB.DrawLatex(0.19, 0.78,"BB Category")
 	latexFitBE.DrawLatex(0.60, 0.78,"BE+EE Category")
-	for par in range(resBB.GetFunction("fun").GetNpar()):
-		yPos = 0.74-0.04*(float(par))
-		latexFitBB.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(resBB.GetFunction("fun").GetParName(par),resBB.GetFunction("fun").GetParameter(par),resBB.GetFunction("fun").GetParError(par)))
-		latexFitBE.DrawLatex(0.60, yPos,"%s = %5.3g #pm %5.3g"%(resBE.GetFunction("fun").GetParName(par),resBE.GetFunction("fun").GetParameter(par),resBE.GetFunction("fun").GetParError(par)))
-	latexFitBB.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(resBB.GetFunction("fun").GetChisquare(),resBB.GetFunction("fun").GetNDF(),resBB.GetFunction("fun").GetChisquare()/resBB.GetFunction("fun").GetNDF()))
-	latexFitBE.DrawLatex(0.60, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(resBE.GetFunction("fun").GetChisquare(),resBE.GetFunction("fun").GetNDF(),resBE.GetFunction("fun").GetChisquare()/resBE.GetFunction("fun").GetNDF()))
+	#for par in range(resBB.GetFunction("fun").GetNpar()):
+	#	yPos = 0.74-0.04*(float(par))
+	#	latexFitBB.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(resBB.GetFunction("fun").GetParName(par),resBB.GetFunction("fun").GetParameter(par),resBB.GetFunction("fun").GetParError(par)))
+	#	latexFitBE.DrawLatex(0.60, yPos,"%s = %5.3g #pm %5.3g"%(resBE.GetFunction("fun").GetParName(par),resBE.GetFunction("fun").GetParameter(par),resBE.GetFunction("fun").GetParError(par)))
+	#latexFitBB.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(resBB.GetFunction("fun").GetChisquare(),resBB.GetFunction("fun").GetNDF(),resBB.GetFunction("fun").GetChisquare()/resBB.GetFunction("fun").GetNDF()))
+	#latexFitBE.DrawLatex(0.60, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(resBE.GetFunction("fun").GetChisquare(),resBE.GetFunction("fun").GetNDF(),resBE.GetFunction("fun").GetChisquare()/resBE.GetFunction("fun").GetNDF()))
 		
 #    leg = ROOT.TLegend(.35,.7,.50,.80,"","brNDC")
 #    leg.AddEntry(resBB,"BB")
