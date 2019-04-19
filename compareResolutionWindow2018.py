@@ -2,6 +2,9 @@ from ROOT import *
 import pickle
 import math
 from setTDRStyle import setTDRStyle
+
+ptbins = [52, 72, 100, 152, 200, 300, 452, 800.]
+
 def efficiencyRatio(eff1,eff2):
 	newEff = TGraphAsymmErrors(eff1.GetN())
 	for i in range(0,eff1.GetN()):
@@ -78,37 +81,36 @@ def getGraph(result,label):
 	return res
 
 
+
 def compareMassRes(trackType):
 	
-	file2016BB = open("default2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2016BE = open("default2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
-	file2017BB = open("cruijff2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2017BE = open("cruijff2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
-	fileCBB = open("crystal2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	fileCBE = open("crystal2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
+	fileDefaultBB = open("default2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
+	fileORBB = open("WindowSmall2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
+	fileNoBB = open("WindowLarge2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
+	fileDefaultBE = open("default2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
+	fileORBE = open("WindowSmall2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
+	fileNoBE = open("WindowLarge2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
 
-	results2016BB = pickle.load(file2016BB)
-	results2016BE = pickle.load(file2016BE)
-	results2017BB = pickle.load(file2017BB)
-	results2017BE = pickle.load(file2017BE)
-	resultsCBB = pickle.load(fileCBB)
-	resultsCBE = pickle.load(fileCBE)
+	resultsDefaultBB = pickle.load(fileDefaultBB)
+	resultsORBB = pickle.load(fileORBB)
+	resultsNoBB = pickle.load(fileNoBB)
+	resultsDefaultBE = pickle.load(fileDefaultBE)
+	resultsORBE = pickle.load(fileORBE)
+	resultsNoBE = pickle.load(fileNoBE)
 
-	print results2016BB
-	print results2017BB
 
-	graph2016BB = getGraph(results2016BB,"DCBBB")
-	graph2016BE = getGraph(results2016BE,"DCBBE")
-	graph2017BB = getGraph(results2017BB,"CruijffBB")
-	graph2017BE = getGraph(results2017BE,"CruijffBE")
-	graphCBB = getGraph(resultsCBB,"CBB")
-	graphCBE = getGraph(resultsCBE,"CBE")
+	graphDefaultBB = getGraph(resultsDefaultBB,"DefaultBB")
+	graphORBB = getGraph(resultsORBB,"ORBB")
+	graphNoBB = getGraph(resultsNoBB,"NoBB")
+	graphDefaultBE = getGraph(resultsDefaultBE,"DefaultBE")
+	graphORBE = getGraph(resultsORBE,"ORBE")
+	graphNoBE = getGraph(resultsNoBE,"NoBE")
 		
 	
-	ratioBB = 	getRatio(results2016BB,results2017BB,"ratioBB")
-	ratioBE = 	getRatio(results2016BE,results2017BE,"ratioBE")
-	ratioCBB = 	getRatio(results2016BB,resultsCBB,"ratioCBB")
-	ratioCBE = 	getRatio(results2016BE,resultsCBE,"ratioCBE")
+	ratioORBB = 	getRatio(resultsORBB,resultsDefaultBB,"ratioBBOR")
+	ratioNoBB = 	getRatio(resultsNoBB,resultsDefaultBB,"ratioBBNo")
+	ratioORBE = 	getRatio(resultsORBE,resultsDefaultBE,"ratioBEOR")
+	ratioNoBE = 	getRatio(resultsNoBE,resultsDefaultBE,"ratioBENo")
 
 
 
@@ -135,13 +137,13 @@ def compareMassRes(trackType):
 
 	plotPad.DrawFrame(0,0,6000,xMax,";M [GeV]; mass resolution")
 
-	graph2016BB.Draw("samepe")
-	graph2017BB.Draw("samepe")
-	graphCBB.Draw("samepe")
-	graph2017BB.SetLineColor(kRed)
-	graph2017BB.SetMarkerColor(kRed)
-	graphCBB.SetLineColor(kBlue)
-	graphCBB.SetMarkerColor(kBlue)
+	graphDefaultBB.Draw("samepe")
+	graphORBB.Draw("samepe")
+	graphNoBB.Draw("samepe")
+	graphORBB.SetLineColor(kRed)
+	graphORBB.SetMarkerColor(kRed)
+	graphNoBB.SetLineColor(kBlue)
+	graphNoBB.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -175,9 +177,9 @@ def compareMassRes(trackType):
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BB,"Cruijff","l")
-	leg.AddEntry(graph2017BB,"Double CB","l")
-	leg.AddEntry(graphCBB,"Crystal Ball","l")
+	leg.AddEntry(graphDefaultBB,"Default Window","l")
+	leg.AddEntry(graphORBB,"Small Window","l")
+	leg.AddEntry(graphNoBB,"Large Window","l")
 
 	leg.Draw()
 
@@ -186,17 +188,15 @@ def compareMassRes(trackType):
 
 	ratioPad.cd()
 
-	ratioBB.SetLineColor(kRed)
-	ratioCBB.SetLineColor(kBlue)
+	ratioORBB.SetLineColor(kRed)
+	ratioNoBB.SetLineColor(kBlue)
 
-	ratioPad.DrawFrame(0,0.5,6000,1.5,";ratio")
+	ratioPad.DrawFrame(0,0.9,6000,1.1,";;ratio")
 
-	ratioBB.Draw("samepe")
-	ratioCBB.Draw("samepe")
+	ratioORBB.Draw("samepe")
+	ratioNoBB.Draw("samepe")
 
-
-	canv.Print("massResolutionCompareFunc2018_%s_BB.pdf"%trackType)
-	
+	canv.Print("massResolutionWindow2018_%s_BB.pdf"%trackType)
 	
 	canv = TCanvas("c1","c1",800,1200)
 
@@ -221,13 +221,14 @@ def compareMassRes(trackType):
 
 	plotPad.DrawFrame(0,0,6000,xMax,";M [GeV]; mass resolution")
 
-	graph2016BE.Draw("samepe")
-	graph2017BE.Draw("samepe")
-	graphCBE.Draw("samepe")
-	graph2017BE.SetLineColor(kRed)
-	graph2017BE.SetMarkerColor(kRed)
-	graphCBE.SetLineColor(kBlue)
-	graphCBE.SetMarkerColor(kBlue)
+
+	graphDefaultBE.Draw("samepe")
+	graphORBE.Draw("samepe")
+	graphNoBE.Draw("samepe")
+	graphORBE.SetLineColor(kRed)
+	graphORBE.SetMarkerColor(kRed)
+	graphNoBE.SetLineColor(kBlue)
+	graphNoBE.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -261,9 +262,9 @@ def compareMassRes(trackType):
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BE,"Cruijff","l")
-	leg.AddEntry(graph2017BE,"Double CB","l")
-	leg.AddEntry(graphCBE,"Crystal Ball","l")
+	leg.AddEntry(graphDefaultBE,"Default Window","l")
+	leg.AddEntry(graphORBE,"Small Window","l")
+	leg.AddEntry(graphNoBE,"Large Window","l")
 
 	leg.Draw()
 
@@ -272,19 +273,22 @@ def compareMassRes(trackType):
 
 	ratioPad.cd()
 
-	ratioBE.SetLineColor(kRed)
-	ratioCBE.SetLineColor(kBlue)
+	ratioORBE.SetLineColor(kRed)
+	ratioNoBE.SetLineColor(kBlue)
 
-	ratioPad.DrawFrame(0,0.5,6000,1.5,";;ratio")
+	ratioPad.DrawFrame(0,0.9,6000,1.1,";;ratio")
 
-	ratioBE.Draw("samepe")
-	ratioCBE.Draw("samepe")
-
-
-	canv.Print("massResolutionCompareFunc2018_%s_BE.pdf"%trackType)
+	ratioORBE.Draw("samepe")
+	ratioNoBE.Draw("samepe")
 
 
-#tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+	canv.Print("massResolutionWindow2018_%s_BE.pdf"%trackType)
+	
+	
+
+
+
+#~ tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
 tracks = ["TunePNew"]
 for trackType in tracks:
 	compareMassRes(trackType)

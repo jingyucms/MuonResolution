@@ -86,20 +86,28 @@ def compareMassRes(trackType):
 	file2016BE = open("default2016/MassResolutionVsMass_%s_BE.pkl"%trackType)
 	file2017BB = open("cruijff2016/MassResolutionVsMass_%s_BB.pkl"%trackType)
 	file2017BE = open("cruijff2016/MassResolutionVsMass_%s_BE.pkl"%trackType)
+	fileCBB = open("crystal2016/MassResolutionVsMass_%s_BB.pkl"%trackType)
+	fileCBE = open("crystal2016/MassResolutionVsMass_%s_BE.pkl"%trackType)
 
 	results2016BB = pickle.load(file2016BB)
 	results2016BE = pickle.load(file2016BE)
 	results2017BB = pickle.load(file2017BB)
 	results2017BE = pickle.load(file2017BE)
+	resultsCBB = pickle.load(fileCBB)
+	resultsCBE = pickle.load(fileCBE)
 
 	graph2016BB = getGraph(results2016BB,"2016BB")
 	graph2016BE = getGraph(results2016BE,"2016BE")
 	graph2017BB = getGraph(results2017BB,"2017BB")
 	graph2017BE = getGraph(results2017BE,"2017BE")
+	graphCBB = getGraph(resultsCBB,"CBB")
+	graphCBE = getGraph(resultsCBE,"CBE")
 		
 	
 	ratioBB = 	getRatio(results2016BB,results2017BB,"ratioBB")
 	ratioBE = 	getRatio(results2016BE,results2017BE,"ratioBE")
+	ratioCBB = 	getRatio(results2016BB,resultsCBB,"ratioCBB")
+	ratioCBE = 	getRatio(results2016BE,resultsCBE,"ratioCBE")
 
 
 
@@ -126,10 +134,13 @@ def compareMassRes(trackType):
 
 	plotPad.DrawFrame(0,0,6000,xMax,";mass [GeV]; #chi^{2}/N_{dof}")
 
-	graph2016BB.Draw("samepe")
-	graph2017BB.Draw("samepe")
+	graph2016BB.Draw("samepl")
+	graph2017BB.Draw("samepl")
 	graph2017BB.SetLineColor(kRed)
 	graph2017BB.SetMarkerColor(kRed)
+	graphCBB.Draw("samepl")
+	graphCBB.SetLineColor(kBlue)
+	graphCBB.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -165,6 +176,7 @@ def compareMassRes(trackType):
 	leg.SetBorderSize(1)		
 	leg.AddEntry(graph2016BB,"Double-Sided CB","l")
 	leg.AddEntry(graph2017BB,"Cruijff","l")
+	leg.AddEntry(graphCBB,"Crystal Ball","l")
 
 	leg.Draw()
 
@@ -180,7 +192,7 @@ def compareMassRes(trackType):
 	#~ ratioBB.Draw("samepe")
 
 
-	canv.Print("chi2CompareVsMass_%s_BB.pdf"%trackType)
+	canv.Print("chi2CompareVsMass2016_%s_BB.pdf"%trackType)
 	
 	
 	canv = TCanvas("c1","c1",800,800)
@@ -206,10 +218,13 @@ def compareMassRes(trackType):
 
 	plotPad.DrawFrame(0,0,6000,xMax,";mass [GeV]; #chi^{2}/N_{dof}")
 
-	graph2016BE.Draw("samepe")
-	graph2017BE.Draw("samepe")
+	graph2016BE.Draw("samepl")
+	graph2017BE.Draw("samepl")
 	graph2017BE.SetLineColor(kRed)
 	graph2017BE.SetMarkerColor(kRed)
+	graphCBE.Draw("samepl")
+	graphCBE.SetLineColor(kBlue)
+	graphCBE.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -245,6 +260,7 @@ def compareMassRes(trackType):
 	leg.SetBorderSize(1)		
 	leg.AddEntry(graph2016BE,"Double-Sided CB","l")
 	leg.AddEntry(graph2017BE,"Cruiff","l")
+	leg.AddEntry(graphCBE,"Crystal Ball","l")
 
 	leg.Draw()
 
@@ -252,7 +268,7 @@ def compareMassRes(trackType):
 
 
 
-	canv.Print("chi2CompareVsMass2106_%s_BE.pdf"%trackType)
+	canv.Print("chi2CompareVsMass2016_%s_BE.pdf"%trackType)
 
 
 #~ tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]

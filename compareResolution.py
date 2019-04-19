@@ -294,6 +294,7 @@ def compareMassRes(trackType):
 	canv.Print("massResolutionCompare_%s_BE.pdf"%trackType)
 
 
-tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+#tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+tracks = ["TunePNew"]
 for trackType in tracks:
 	compareMassRes(trackType)

@@ -11,7 +11,10 @@ from setTDRStyle import setTDRStyle
 oldargv = sys.argv[:]
 sys.argv = [ '-b-' ]
 #~ import ROOT
-from ROOT import TCanvas, gROOT, gStyle, TFile, TH2F, TH1, kFALSE, TH1D, gSystem, RooWorkspace, RooRealVar, RooCmdArg, RooDataHist, RooArgList, TPad, TLegend, TLatex, TGraphAsymmErrors, TGraph, TGraphErrors, kBlack, kRed, kBlue, TLine
+from ROOT import TF1, TCanvas, gROOT, gStyle, TFile, TH2F, TH1, kFALSE, TH1D, gSystem, RooWorkspace, RooRealVar, RooCmdArg, RooDataHist, RooArgList, TPad, TLegend, TLatex, TGraphAsymmErrors, TGraph, TGraphErrors, kBlack, kRed, kBlue, TLine
+from ROOT import RooDataHist, RooBreitWigner, RooFFTConvPdf, RooFit
+import ROOT
+from ROOT import *
 gROOT.SetBatch(True)
 sys.argv = oldargv
 
@@ -31,11 +34,12 @@ sampleLists  = {
 	"2017Inclusive":["ana_datamc_DYInclusive2017.root"],
 	"2016MassBinned":["dileptonAna_resolution_2016_dy50to120.root","dileptonAna_resolution_2016_dy120to200.root","dileptonAna_resolution_2016_dy200to400.root","dileptonAna_resolution_2016_dy400to800.root","dileptonAna_resolution_2016_dy800to1400.root","dileptonAna_resolution_2016_dy1400to2300.root","dileptonAna_resolution_2016_dy2300to3500.root","dileptonAna_resolution_2016_dy3500to4500.root","dileptonAna_resolution_2016_dy4500to6000.root","dileptonAna_resolution_2016_dy6000toInf.root"],
 	"2017MassBinned":["dileptonAna_resolution_dy50to120_2017.root","dileptonAna_resolution_dy120to200_2017.root","dileptonAna_resolution_dy200to400_2017.root","dileptonAna_resolution_dy400to800_2017.root","dileptonAna_resolution_dy800to1400_2017.root","dileptonAna_resolution_dy1400to2300_2017.root","dileptonAna_resolution_dy2300to3500_2017.root","dileptonAna_resolution_dy3500to4500_2017.root","dileptonAna_resolution_dy4500to6000_2017.root","dileptonAna_resolution_dy6000toInf_2017.root"],
-	"2017MassBinned":["dileptonAna_resolution_dy50to120_2017.root","dileptonAna_resolution_dy120to200_2017.root","dileptonAna_resolution_dy200to400_2017.root","dileptonAna_resolution_dy400to800_2017.root","dileptonAna_resolution_dy800to1400_2017.root","dileptonAna_resolution_dy1400to2300_2017.root","dileptonAna_resolution_dy2300to3500_2017.root","dileptonAna_resolution_dy3500to4500_2017.root","dileptonAna_resolution_dy4500to6000_2017.root","dileptonAna_resolution_dy6000toInf_2017.root"],
 	"2018MassBinned":["dileptonAna_resolution_2018_dy50to120.root","dileptonAna_resolution_2018_dy120to200.root","dileptonAna_resolution_2018_dy200to400.root","dileptonAna_resolution_2018_dy400to800.root","dileptonAna_resolution_2018_dy800to1400.root","dileptonAna_resolution_2017_dy1400to2300.root","dileptonAna_resolution_2018_dy2300to3500.root","dileptonAna_resolution_2017_dy3500to4500.root","dileptonAna_resolution_2018_dy4500to6000.root","dileptonAna_resolution_2017_dy6000toInf.root"],
 	"2016PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_2016_dyPt50To100.root","dileptonAna_resolution_2016_dyPt100To250.root","dileptonAna_resolution_2016_dyPt250To400.root","dileptonAna_resolution_2016_dyPt400To600.root","dileptonAna_resolution_2016_dyPt650ToInf.root"],
-	"2017PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_dyPt50To150_1Jet_2017.root","dileptonAna_resolution_dyPt50To150_2Jets_2017.root","dileptonAna_resolution_dyPt150To250_1Jet_2017.root","dileptonAna_resolution_dyPt150To250_2Jets_2017.root","dileptonAna_resolution_dyPt250To400_1Jet_2017.root","dileptonAna_resolution_dyPt250To400_2Jets_2017.root","dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root","dileptonAna_resolution_dy_3Jets_2017.root","dileptonAna_resolution_dy_4Jets_2017.root"],
+	"2017PtBinned":[#"dileptonAna_resolution_2016_dyInclusive50.root",
+"dileptonAna_resolution_dyPt50To150_1Jet_2017.root","dileptonAna_resolution_dyPt50To150_2Jets_2017.root","dileptonAna_resolution_dyPt150To250_1Jet_2017.root","dileptonAna_resolution_dyPt150To250_2Jets_2017.root","dileptonAna_resolution_dyPt250To400_1Jet_2017.root","dileptonAna_resolution_dyPt250To400_2Jets_2017.root","dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root","dileptonAna_resolution_dy_3Jets_2017.root","dileptonAna_resolution_dy_4Jets_2017.root"],
 #	"2017PtBinned":["dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root"]
+	"2018PtBinned":["dyPt150to250_1Jets_2018.root", "dyPt250to400_1Jets_2018.root", "dyPt400toInf_1Jets_2018.root", "dyPt50to150_1Jets_2018.root", "dyPt_3Jets_2018.root", "dyPt150to250_2Jets_2018.root", "dyPt250to400_2Jets_2018.root", "dyPt400toInf_2Jets_2018.root", "dyPt50to150_2Jets_2018.root", "dyPt_4Jets_2018.root"],
 
 }
 
@@ -46,8 +50,9 @@ xSecs = {
 	"2016MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2017MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2016PtBinned": [1921.8,363.81428,84.014804,3.228256512,0.436041144,0.040981055],
-	"2017PtBinned": [1921.8,491.5,587.8599,27.31,10.99,6.068,5.917,2.536,2.536,119.6,40.44]	
+	"2017PtBinned": [1921.8,316.6,169.6,9.543,15.65,1.098,2.737,0.1193,0.4477,111.5,44.03],
 #	"2017PtBinned": [2.536,2.536]	
+	"2018PtBinned": [9.543, 1.098, 0.1193, 316.6, 111.5, 15.65, 2.737, 0.4477, 169.6, 44.03],
 }#    
 #    resBB.SetMarkerStyle(22)
 #    resBB.SetMarkerColor(kRed)
@@ -155,6 +160,7 @@ def loadHistos(inputdata,inputMC,region,weights,weights2,trackType,mcIsData,data
 		hmc = _fileMC[0].Get("Our2017MuonsPlusMuonsMinus%sResolution/DileptonMass_2d_vsPt%s" %(trackType,reg)).Clone()
 	else:	
 		for k,mc in enumerate(inputMC):
+			#print mc
 			tmp   = _fileMC[k].Get("Our2017MuonsPlusMuonsMinus%sResolution/DileptonMass_2d_vsPt%s" %(trackType,reg)).Clone()
 			
 			if k==0 and not weights: 
@@ -240,8 +246,8 @@ def doFit(hist,output,rap="BB",flavour="DATA",trackType="TunePNew",funct="double
 	
 	sig    = []
 	sige   = []
-	mean   = []
-	meane  = []
+	meanList   = []
+	meanListe  = []
 	nChi2  = []
 	gSystem.Load("./RooCruijff_cxx.so")
 	gSystem.Load("./RooDCBShape_cxx.so")
@@ -262,11 +268,12 @@ def doFit(hist,output,rap="BB",flavour="DATA",trackType="TunePNew",funct="double
 		
 		sig.append(wsReturn.var("Sig").getVal())
 		sige.append(wsReturn.var("Sige").getVal())
-		mean.append(wsReturn.var("Mean").getVal())
-		meane.append(wsReturn.var("Meane").getVal())
+		meanList.append(wsReturn.var("Mean").getVal())
+		meanListe.append(wsReturn.var("Meane").getVal())
 		nChi2.append(wsReturn.var("chi2").getVal()/wsReturn.var("nDOF").getVal())
-		
-	return mean,meane,sig,sige, nChi2	
+
+
+	return meanList,meanListe,sig,sige, nChi2	
 	
 def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataIsMC):
 	style = setTDRStyle()
@@ -484,7 +491,6 @@ if __name__ == "__main__":
 	
 	output=args.output
 
-
 	rebinFactor = args.rebin
 	xLow = args.xMin
 	xHigh = args.xMax
@@ -504,6 +510,7 @@ if __name__ == "__main__":
 		weights = xSecs[args.inputMC]
 		if dataIsMC:
 			weights2 = xSecs[args.inputMC2]
+	
 	#~ for trackType in tracks:	
 	makeMassRes(inputDATA,inputMC,output,weights,weights2,args.track,args.funct,mcIsData,dataIsMC)
 	print ("DONE")
