@@ -79,35 +79,35 @@ def getRatio(result,result2,label):
 	return ratio
 
 
-
-def comparePtRes(trackType):
+def compareMassRes(trackType):
 	
-	file2016BB = open("2016Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	file2016BE = open("2016Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
-	file2017BB = open("Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	file2017BE = open("Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
-	file2018BB = open("2018Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	file2018BE = open("2018Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileDefaultBB = open("2018Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileORBB = open("2018BoostedRebin2/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileNoBB = open("2018BoostedRebin4/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileDefaultBE = open("2018Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileORBE = open("2018BoostedRebin2/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileNoBE = open("2018BoostedRebin4/MassResolutionVsPt_%s_BE.pkl"%trackType)
 
-	results2016BB = pickle.load(file2016BB)
-	results2016BE = pickle.load(file2016BE)
-	results2017BB = pickle.load(file2017BB)
-	results2017BE = pickle.load(file2017BE)
-	results2018BB = pickle.load(file2018BB)
-	results2018BE = pickle.load(file2018BE)
+	resultsDefaultBB = pickle.load(fileDefaultBB)
+	resultsORBB = pickle.load(fileORBB)
+	resultsNoBB = pickle.load(fileNoBB)
+	resultsDefaultBE = pickle.load(fileDefaultBE)
+	resultsORBE = pickle.load(fileORBE)
+	resultsNoBE = pickle.load(fileNoBE)
 
-	graph2016BB = getGraph(results2016BB,"2016BB")
-	graph2016BE = getGraph(results2016BE,"2016BE")
-	graph2017BB = getGraph(results2017BB,"2017BB")
-	graph2017BE = getGraph(results2017BE,"2017BE")
-	graph2018BB = getGraph(results2018BB,"2018BB")
-	graph2018BE = getGraph(results2018BE,"2018BE")
+
+	graphDefaultBB = getGraph(resultsDefaultBB,"DefaultBB")
+	graphORBB = getGraph(resultsORBB,"ORBB")
+	graphNoBB = getGraph(resultsNoBB,"NoBB")
+	graphDefaultBE = getGraph(resultsDefaultBE,"DefaultBE")
+	graphORBE = getGraph(resultsORBE,"ORBE")
+	graphNoBE = getGraph(resultsNoBE,"NoBE")
 		
 	
-	ratioBB = 	getRatio(results2016BB,results2017BB,"ratioBB")
-	ratioBE = 	getRatio(results2016BE,results2017BE,"ratioBE")
-	ratioBB18 = getRatio(results2016BB,results2018BB,"ratioBB18")
-	ratioBE18 = getRatio(results2016BE,results2018BE,"ratioBE18")
+	ratioORBB = 	getRatio(resultsORBB,resultsDefaultBB,"ratioBBOR")
+	ratioNoBB = 	getRatio(resultsNoBB,resultsDefaultBB,"ratioBBNo")
+	ratioORBE = 	getRatio(resultsORBE,resultsDefaultBE,"ratioBEOR")
+	ratioNoBE = 	getRatio(resultsNoBE,resultsDefaultBE,"ratioBENo")
 
 
 
@@ -125,7 +125,6 @@ def comparePtRes(trackType):
 	plotPad.cd()
 	plotPad.SetGrid()
 	gStyle.SetTitleXOffset(1.45)
-	gStyle.SetTitleYOffset(1.55)
 
 	xMax = 6
 	if trackType == "Inner":
@@ -135,13 +134,13 @@ def comparePtRes(trackType):
 
 	plotPad.DrawFrame(52,0,800,xMax,";p_{T} [GeV]; Z peak resolution [GeV]")
 
-	graph2016BB.Draw("samepe")
-	graph2017BB.Draw("samepe")
-	graph2018BB.Draw("samepe")
-	graph2017BB.SetLineColor(kRed)
-	graph2017BB.SetMarkerColor(kRed)
-	graph2018BB.SetLineColor(kBlue)
-	graph2018BB.SetMarkerColor(kBlue)
+	graphDefaultBB.Draw("samepe")
+	graphORBB.Draw("samepe")
+	graphNoBB.Draw("samepe")
+	graphORBB.SetLineColor(kRed)
+	graphORBB.SetMarkerColor(kRed)
+	graphNoBB.SetLineColor(kBlue)
+	graphNoBB.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -175,9 +174,9 @@ def comparePtRes(trackType):
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BB,"2016","l")
-	leg.AddEntry(graph2017BB,"2017","l")
-	leg.AddEntry(graph2018BB,"2018","l")
+	leg.AddEntry(graphDefaultBB,"0.5 GeV Binning","l")
+	leg.AddEntry(graphORBB,"1 GeV Binning","l")
+	leg.AddEntry(graphNoBB,"2 GeV Binning","l")
 
 	leg.Draw()
 
@@ -186,22 +185,15 @@ def comparePtRes(trackType):
 
 	ratioPad.cd()
 
-	ratioBB.SetLineColor(kRed)
-	ratioBB18.SetLineColor(kBlue)
-	ratioBB.SetMarkerColor(kRed)
-	ratioBB18.SetMarkerColor(kBlue)
+	ratioORBB.SetLineColor(kRed)
+	ratioNoBB.SetLineColor(kBlue)
 
 	ratioPad.DrawFrame(52,0.5,800,1.5,";;ratio")
 
-	ratioBB.Draw("samepe")
-	ratioBB18.Draw("samepe")
+	ratioORBB.Draw("samepe")
+	ratioNoBB.Draw("samepe")
 
-	l = TLine(52,1,800,1)
-	l.SetLineStyle(kDashed)
-	l.Draw()
-	
-	canv.Print("PtResolutionBoostedCompare_%s_BB.pdf"%trackType)
-	
+	canv.Print("massResolutionPtBinning2018_%s_BB.pdf"%trackType)
 	
 	canv = TCanvas("c1","c1",800,1200)
 
@@ -217,7 +209,6 @@ def comparePtRes(trackType):
 	plotPad.cd()
 	plotPad.SetGrid()
 	gStyle.SetTitleXOffset(1.45)
-	gStyle.SetTitleYOffset(1.55)
 
 	xMax = 6
 	if trackType == "Inner":
@@ -227,13 +218,13 @@ def comparePtRes(trackType):
 
 	plotPad.DrawFrame(52,0,452,xMax,";p_{T} [GeV]; Z peak resolution [GeV]")
 
-	graph2016BE.Draw("samepe")
-	graph2017BE.Draw("samepe")
-	graph2018BE.Draw("samepe")
-	graph2017BE.SetLineColor(kRed)
-	graph2017BE.SetMarkerColor(kRed)
-	graph2018BE.SetLineColor(kBlue)
-	graph2018BE.SetMarkerColor(kBlue)
+	graphDefaultBE.Draw("samepe")
+	graphORBE.Draw("samepe")
+	graphNoBE.Draw("samepe")
+	graphORBE.SetLineColor(kRed)
+	graphORBE.SetMarkerColor(kRed)
+	graphNoBE.SetLineColor(kBlue)
+	graphNoBE.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -267,9 +258,9 @@ def comparePtRes(trackType):
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BE,"2016","l")
-	leg.AddEntry(graph2017BE,"2017","l")
-	leg.AddEntry(graph2018BE,"2018","l")
+	leg.AddEntry(graphDefaultBE,"0.5 GeV Binning","l")
+	leg.AddEntry(graphORBE,"1 GeV Binning","l")
+	leg.AddEntry(graphNoBE,"2 GeV Binning","l")
 
 	leg.Draw()
 
@@ -278,25 +269,22 @@ def comparePtRes(trackType):
 
 	ratioPad.cd()
 
-	ratioBE.SetLineColor(kRed)
-	ratioBE18.SetLineColor(kBlue)
-	ratioBE.SetMarkerColor(kRed)
-	ratioBE18.SetMarkerColor(kBlue)
+	ratioORBE.SetLineColor(kRed)
+	ratioNoBE.SetLineColor(kBlue)
 
 	ratioPad.DrawFrame(52,0.5,452,1.5,";;ratio")
 
-	l = TLine(52,1,452,1)
-	l.SetLineStyle(kDashed)
-	l.Draw()
-
-	ratioBE.Draw("samepe")
-	ratioBE18.Draw("samepe")
+	ratioORBE.Draw("samepe")
+	ratioNoBE.Draw("samepe")
 
 
-	canv.Print("PtResolutionBoostedCompare_%s_BE.pdf"%trackType)
+	canv.Print("massResolutionVsPtBinning2018_%s_BE.pdf"%trackType)
+	
+	
 
 
-#tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+
+#~ tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
 tracks = ["TunePNew"]
 for trackType in tracks:
-	comparePtRes(trackType)
+	compareMassRes(trackType)
