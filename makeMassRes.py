@@ -250,7 +250,7 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 				#~ sys =1-systfunc.GetParameter(par+1)/funct.GetParameter(par+1)
 				#~ sys = sys*funct.GetParameter(par+1)
 			#~ else:
-			sys = 0.
+			sys = 0
 			errs.append(math.sqrt(sys*sys+funct.GetParError(par+1)*funct.GetParError(par+1)))
 		if funct.GetNDF() > 0:
 			chi2.append(funct.GetChisquare()/funct.GetNDF())
@@ -473,10 +473,10 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 				fun.SetParameters(0.,1E-5,-1.E-8,2E-12,-2E-16)
 				fun.SetParLimits(1, 1.0E-6, 1.0E-4)
 				fun.SetParLimits(2,-1.0E-7,-1.0E-9)
-#                fun.SetParLimits(4,-3.0E-16,-1E-16)
-				#                fun.FixParameter(3,0.)
+		                fun.SetParLimits(4,-1.0E-16,1.0E-16)
+				#fun.FixParameter(3,0.)
 #                fun.FixParameter(3,0.)
-#                fun.FixParameter(4,0.)
+                		#fun.FixParameter(4,0.)
 			elif "AlphaR" in f.GetName(): 
 				fun.SetParameters(0.25, 1E-6, -1.E-9, 1.E-12, -1.E-16)
 				fun.SetParLimits(1, 1E-7, 1E-5)
@@ -502,18 +502,18 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 				fun.SetParLimits(3,-1E-12,-5E-14)
 				fun.FixParameter(4,0.)
 				
-#			f.Fit(fun,"MBFE+")            
-#			fun.Draw("SAME")
+			#f.Fit(fun,"MBFE+")            
+			#fun.Draw("SAME")
 
 		
 			latexFit = ROOT.TLatex()
 			latexFit.SetTextFont(42)
 			latexFit.SetTextSize(0.030)
 			latexFit.SetNDC(True)        
-#			for par in range(fun.GetNpar()):
-#				yPos = 0.74-0.04*(float(par))
-#				latexFit.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(fun.GetParName(par),fun.GetParameter(par),fun.GetParError(par)))
-#			latexFit.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(fun.GetChisquare(),fun.GetNDF(),fun.GetChisquare()/fun.GetNDF()))
+			for par in range(fun.GetNpar()):
+				yPos = 0.74-0.04*(float(par))
+			#	latexFit.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(fun.GetParName(par),fun.GetParameter(par),fun.GetParError(par)))
+			#latexFit.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(fun.GetChisquare(),fun.GetNDF(),fun.GetChisquare()/fun.GetNDF()))
 			
 		latex = ROOT.TLatex()
 		latex.SetTextFont(42)

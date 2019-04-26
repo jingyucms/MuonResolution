@@ -197,7 +197,7 @@ def compareMassRes(trackType):
 	ratioORBB.Draw("samepe")
 	ratioNoBB.Draw("samepe")
 
-	canv.Print("massResolutionWindow_%s_BB.pdf"%trackType)
+	canv.Print("massResolutionVsMassWindow_%s_BB.pdf"%trackType)
 	
 	canv = TCanvas("c1","c1",800,1200)
 
@@ -284,7 +284,7 @@ def compareMassRes(trackType):
 	ratioNoBE.Draw("samepe")
 
 
-	canv.Print("massResolutionWindow_%s_BE.pdf"%trackType)
+	canv.Print("massResolutionVsMassWindow_%s_BE.pdf"%trackType)
 	
 	
 

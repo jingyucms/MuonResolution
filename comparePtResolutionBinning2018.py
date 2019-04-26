@@ -193,7 +193,7 @@ def compareMassRes(trackType):
 	ratioORBB.Draw("samepe")
 	ratioNoBB.Draw("samepe")
 
-	canv.Print("massResolutionPtBinning2018_%s_BB.pdf"%trackType)
+	canv.Print("massResolutionVsPtBinning2018_%s_BB.pdf"%trackType)
 	
 	canv = TCanvas("c1","c1",800,1200)
 
