@@ -20,7 +20,7 @@ ResStudy = {
 "compareResolutionFuncMean2018.py": "2018",
 
 # comparison between years, 2016-2018 (res vs mass)
-"compareMassBia.py": "compare mass scale vs mass for 2016, 2017, 2018",
+"compareMassBias.py": "compare mass scale vs mass for 2016, 2017, 2018",
 
 "compareResolution.py": "compare res vs mass for 2016, 2017, 2018",
 
