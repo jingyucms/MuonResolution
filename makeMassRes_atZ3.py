@@ -318,7 +318,7 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	# Upper plot will be in pad1
 	pad1 = TPad("pad1", "pad1", 0, 0.3, 1, 1.0)
 	pad1.SetGrid()        # Vertical grid
-	pad1.SetBottomMargin(0)
+	pad1.SetBottomMargin(0.1)
 	pad1.Draw()             # Draw the upper pad: pad1
 	pad1.cd()               # pad1 becomes the current pad
 	pad1.SetTicks()
@@ -344,6 +344,7 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	res_data.SetFillColor(0)
 	res_data.SetTitle("Dimuon mass resolution vs pT for %s tracks"%trackType)
 	res_data.GetYaxis().SetTitle("Mass resolution at Z peak [GeV]")
+	res_data.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) [GeV]")
 	res_data.GetYaxis().SetTitleOffset(1.2)
 	res_data.GetYaxis().SetRangeUser(0.,6.)
 	if trackType == "Outer":
@@ -356,9 +357,11 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	res_mc.SetFillColor(0)
 	res_mc.SetTitle("Dimuon mass resolution vs pT for %s tracks"%trackType)
 	res_mc.GetYaxis().SetTitle("Mass resolution at Z peak [GeV]")
+	res_mc.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) [GeV]")
 	res_mc.GetYaxis().SetTitleOffset(1.5)
 	res_mc.Draw("P E0 SAME")
-	leg = TLegend(0.35,0.7,0.50,0.80,"","brNDC")
+	if rapidity == "BB": leg = TLegend(0.25,0.6,0.50,0.80,"both muons |#eta| < 1.2","brNDC")
+	else: leg = TLegend(0.25,0.6,0.5,0.8,"at least one muon |#eta| > 1.2","brNDC")
 	if mcIsData:
 		leg.AddEntry(res_data,"DATA 2017")
 		leg.AddEntry(res_mc,"DATA 2016")
@@ -396,7 +399,7 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	c2.cd()          # Go back to the main canvas before defining pad2
 	pad2 = TPad("pad2", "pad2",0, 0.1, 1, 0.30)    
 	pad2.SetTopMargin(0)
-	pad2.SetBottomMargin(0.25)
+	pad2.SetBottomMargin(0.3)
 	pad2.SetGrid()
 	pad2.Draw()
 	pad2.cd()
@@ -416,7 +419,7 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	ratio.GetYaxis().SetTitleSize(0.14)
 	ratio.GetYaxis().SetLabelSize(0.14)    
 	ratio.GetYaxis().SetNdivisions(506)    
-	ratio.GetXaxis().SetTitleSize(0.2)
+	ratio.GetXaxis().SetTitleSize(0.12)
 	ratio.GetXaxis().SetTitleOffset(1.2)
 	ratio.GetXaxis().SetLabelSize(0.20)
 	ratio.Draw("A P E2")
