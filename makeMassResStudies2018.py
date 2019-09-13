@@ -20,5 +20,5 @@ command = ["python","makeMassRes.py","-i","2018MassBinned","-o","Rebin82018Cruij
 subprocess.call(command)
 command = ["python","makeMassRes.py","-i","2018MassBinned","-o","WindowSmall2018","--xMinFac","-1","--xMaxFac","1","-f","doubleCB"]
 subprocess.call(command)
-command = ["python","makeMassRes.py","-i","2018MassBinned","-o","WindowLarge2016","--xMinFac","-2","--xMaxFac","2","-f","doubleCB"]
+command = ["python","makeMassRes.py","-i","2018MassBinned","-o","WindowLarge2018","--xMinFac","-2","--xMaxFac","2","-f","doubleCB"]
 subprocess.call(command)

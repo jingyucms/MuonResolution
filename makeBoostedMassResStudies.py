@@ -1,6 +1,7 @@
 import subprocess
 
-tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+#tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+tracks = ["TunePNew"]
 
 for track in tracks:
 

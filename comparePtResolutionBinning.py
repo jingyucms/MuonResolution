@@ -45,9 +45,9 @@ def efficiencyRatio(eff1,eff2):
 	
 def getGraph(result,label):
 	
-	ptda = result["ptda"]
-	da_sig = result["data_sig"]
-	da_sige = result["data_sige"]
+	ptda = result["ptmc"]
+	da_sig = result["mc_sig"]
+	da_sige = result["mc_sige"]
 	
 	res_data  = TGraphAsymmErrors(len(ptda))
 	res_data.SetName(label)
@@ -61,12 +61,12 @@ def getGraph(result,label):
 
 def getRatio(result,result2,label):
 	
-	ptda = result["ptda"]
-	da_sig = result["data_sig"]
-	da_sige = result["data_sige"]
-	ptmc = result2["ptda"]
-	mc_sig = result2["data_sig"]
-	mc_sige = result2["data_sige"]
+	ptda = result["ptmc"]
+	da_sig = result["mc_sig"]
+	da_sige = result["mc_sige"]
+	ptmc = result2["ptmc"]
+	mc_sig = result2["mc_sig"]
+	mc_sige = result2["mc_sige"]
 	
 	ratio  = TGraphAsymmErrors(len(ptda))
 	ratio.SetName(label)
@@ -193,7 +193,7 @@ def compareMassRes(trackType):
 	ratioORBB.Draw("samepe")
 	ratioNoBB.Draw("samepe")
 
-	canv.Print("massResolutionPtBinning_%s_BB.pdf"%trackType)
+	canv.Print("massResolutionVsPtBinning_%s_BB.pdf"%trackType)
 	
 	canv = TCanvas("c1","c1",800,1200)
 

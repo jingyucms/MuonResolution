@@ -81,12 +81,12 @@ def getRatio(result,result2,label):
 
 def compareMassRes(trackType):
 	
-	fileDefaultBB = open("Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	fileORBB = open("BoostedWindowLarge/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	fileNoBB = open("BoostedWindowSmall/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	fileDefaultBE = open("Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
-	fileORBE = open("BoostedWindowLarge/MassResolutionVsPt_%s_BE.pkl"%trackType)
-	fileNoBE = open("BoostedWindowSmall/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileDefaultBB = open("2016Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileORBB = open("2016BoostedWindowLarge/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileNoBB = open("2016BoostedWindowSmall/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileDefaultBE = open("2016Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileORBE = open("2016BoostedWindowLarge/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileNoBE = open("2016BoostedWindowSmall/MassResolutionVsPt_%s_BE.pkl"%trackType)
 
 	resultsDefaultBB = pickle.load(fileDefaultBB)
 	resultsORBB = pickle.load(fileORBB)
@@ -193,7 +193,7 @@ def compareMassRes(trackType):
 	ratioORBB.Draw("samepe")
 	ratioNoBB.Draw("samepe")
 
-	canv.Print("massResolutionVsPtWindow_%s_BB.pdf"%trackType)
+	canv.Print("massResolutionVsPtWindow2016_%s_BB.pdf"%trackType)
 	
 	canv = TCanvas("c1","c1",800,1200)
 
@@ -278,7 +278,7 @@ def compareMassRes(trackType):
 	ratioNoBE.Draw("samepe")
 
 
-	canv.Print("massResolutionVsPtWindow_%s_BE.pdf"%trackType)
+	canv.Print("massResolutionVsPtWindow2016_%s_BE.pdf"%trackType)
 	
 	
 

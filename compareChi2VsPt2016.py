@@ -2,6 +2,10 @@ from ROOT import *
 import pickle
 import math
 from setTDRStyle import setTDRStyle
+
+ptbins = [52, 72, 100, 152, 200, 300, 452, 800.]
+
+
 def efficiencyRatio(eff1,eff2):
 	newEff = TGraphAsymmErrors(eff1.GetN())
 	for i in range(0,eff1.GetN()):
@@ -40,108 +44,99 @@ def efficiencyRatio(eff1,eff2):
 		
 	return newEff
 	
-def getRatio(result,result2,label):
+def getRatio(result,result2,label,Data=False):
 	
 	
-	masses = result["mass"]
-	massErr = result["massErr"]
-	sigma = result["sigma"]
-	sigmaErr = result["sigmaErr"]	
-	masses2 = result2["mass"]
-	massErr2 = result2["massErr"]
-	sigma2 = result2["sigma"]
-	sigmaErr2 = result2["sigmaErr"]	
+	ptda = result["ptda"]
+	ptda2   = result2["ptda"]
+
+	if Data:
+		sigma = result["da_nChi2"]
+		sigma2 = result2["da_nChi2"]
+	else:	
+		sigma = result["mc_nChi2"]
+		sigma2 = result2["mc_nChi2"]
 	
-	
-	ratio  = TGraphErrors(len(masses))
+	print sigma
+	print sigma2
+	ratio  = TGraphAsymmErrors(len(ptda))
 	ratio.SetName(label)
-	for i,mass in enumerate(masses):     
-		ratio   .SetPoint(i,mass,sigma[i]/sigma2[i])
-		ratio   .SetPointError(i,massErr[i],(sigma[i]/sigma2[i])*math.sqrt((sigmaErr[i]/sigma[i])**2+(sigmaErr2[i]/sigma2[i])**2))
+	for i,pt in enumerate(ptda):     
+		ratio   .SetPoint(i,pt,sigma[i]/sigma2[i])
+		ratio   .SetPointError(i,ptda[i]-ptbins[i],ptbins[i+1]-ptda[i],0,0)
 	
 	return ratio
 	
 
-def getGraph(result,label):
+def getGraph(result,label,Data=False):
 	
-	masses = result["mass"]
-	massErr = result["massErr"]
-	sigma = result["sigma"]
-	sigmaErr = result["sigmaErr"]
+	ptda = result["ptda"]
+
+	if Data:
+		sigma = result["da_nChi2"]
+	else:	
+		sigma = result["mc_nChi2"]
+	sigmaErr = 0
 	
-	res  = TGraphAsymmErrors(len(masses))
+	res  = TGraphAsymmErrors(len(ptda))
 	res.SetName(label)
-	for i,mass in enumerate(masses):        
-		res.SetPoint(i,mass,sigma[i])
-		res.SetPointError(i,massErr[i],massErr[i],sigmaErr[i],sigmaErr[i])
+	for i,pt in enumerate(ptda):     
+		res.SetPoint(i,pt,sigma[i])
+		res.SetPointError(i,ptda[i]-ptbins[i],ptbins[i+1]-ptda[i],0,0)
 	
 	return res
 
 
 def compareMassRes(trackType):
 	
-	file2016BB = open("default2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2016BE = open("default2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
-	file2017BB = open("cruijff2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2017BE = open("cruijff2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
-	fileCBB = open("crystal2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	fileCBE = open("crystal2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
+	file2016BB = open("2016Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	file2016BE = open("2016Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	file2017BB = open("2016Boostedcruijff/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	file2017BE = open("2016Boostedcruijff/MassResolutionVsPt_%s_BE.pkl"%trackType)
 
 	results2016BB = pickle.load(file2016BB)
 	results2016BE = pickle.load(file2016BE)
 	results2017BB = pickle.load(file2017BB)
 	results2017BE = pickle.load(file2017BE)
-	resultsCBB = pickle.load(fileCBB)
-	resultsCBE = pickle.load(fileCBE)
 
-	print results2016BB
-	print results2017BB
-
-	graph2016BB = getGraph(results2016BB,"DCBBB")
-	graph2016BE = getGraph(results2016BE,"DCBBE")
-	graph2017BB = getGraph(results2017BB,"CruijffBB")
-	graph2017BE = getGraph(results2017BE,"CruijffBE")
-	graphCBB = getGraph(resultsCBB,"CBB")
-	graphCBE = getGraph(resultsCBE,"CBE")
+	graph2016BB = getGraph(results2016BB,"2016BB",Data=True)
+	graph2016BE = getGraph(results2016BE,"2016BE",Data=True)
+	graph2017BB = getGraph(results2017BB,"2017BB",Data=True)
+	graph2017BE = getGraph(results2017BE,"2017BE",Data=True)
 		
 	
-	ratioBB = 	getRatio(results2016BB,results2017BB,"ratioBB")
-	ratioBE = 	getRatio(results2016BE,results2017BE,"ratioBE")
-	ratioCBB = 	getRatio(results2016BB,resultsCBB,"ratioCBB")
-	ratioCBE = 	getRatio(results2016BE,resultsCBE,"ratioCBE")
+	ratioBB = 	getRatio(results2016BB,results2017BB,"ratioBB",Data=True)
+	ratioBE = 	getRatio(results2016BE,results2017BE,"ratioBE",Data=True)
 
 
 
-	canv = TCanvas("c1","c1",800,1200)
+	canv = TCanvas("c1","c1",800,800)
 
-	plotPad = TPad("plotPad","plotPad",0,0.3,1,1)
-	ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
+	plotPad = TPad("plotPad","plotPad",0,0,1,1)
+	#~ ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
 	style = setTDRStyle()
 	gStyle.SetOptStat(0)
 	plotPad.UseCurrentStyle()
-	ratioPad.UseCurrentStyle()
+	#~ ratioPad.UseCurrentStyle()
 	plotPad.Draw()	
-	ratioPad.Draw()	
+	#~ ratioPad.Draw()	
 	plotPad.cd()
 	plotPad.cd()
 	plotPad.SetGrid()
 	gStyle.SetTitleXOffset(1.45)
 
-	xMax = 0.08
+	xMax = 10
 	if trackType == "Inner":
-		xMax = 0.2
+		xMax = 10
 	if trackType == "Outer":
-		xMax = 0.4
+		xMax = 20
 
-	plotPad.DrawFrame(0,0,6000,xMax,";M [GeV]; mass resolution")
+	plotPad.DrawFrame(0,0,800,xMax,";p_{T} [GeV]; #chi^{2}/N_{dof}")
 
 	graph2016BB.Draw("samepe")
 	graph2017BB.Draw("samepe")
-	graphCBB.Draw("samepe")
 	graph2017BB.SetLineColor(kRed)
 	graph2017BB.SetMarkerColor(kRed)
-	graphCBB.SetLineColor(kBlue)
-	graphCBB.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -175,59 +170,53 @@ def compareMassRes(trackType):
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BB,"Cruijff","l")
-	leg.AddEntry(graph2017BB,"Double CB","l")
-	leg.AddEntry(graphCBB,"Crystal Ball","l")
+	leg.AddEntry(graph2016BB,"Double-Sided CB","l")
+	leg.AddEntry(graph2017BB,"Cruijff","l")
 
 	leg.Draw()
 
 	plotPad.RedrawAxis()
 
 
-	ratioPad.cd()
+	#~ ratioPad.cd()
 
-	ratioBB.SetLineColor(kRed)
-	ratioCBB.SetLineColor(kBlue)
+	#~ ratioBB.SetLineColor(kRed)
 
-	ratioPad.DrawFrame(0,0.5,6000,1.5,";ratio")
+	#~ ratioPad.DrawFrame(0,0.5,6000,1.5,";;ratio")
 
-	ratioBB.Draw("samepe")
-	ratioCBB.Draw("samepe")
+	#~ ratioBB.Draw("samepe")
 
 
-	canv.Print("massResolutionCompareFunc2018_%s_BB.pdf"%trackType)
+	canv.Print("chi2CompareVsPt2016_%s_BB.pdf"%trackType)
 	
 	
-	canv = TCanvas("c1","c1",800,1200)
+	canv = TCanvas("c1","c1",800,800)
 
-	plotPad = TPad("plotPad","plotPad",0,0.3,1,1)
-	ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
+	plotPad = TPad("plotPad","plotPad",0,0,1,1)
+	#~ ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
 	style = setTDRStyle()
 	gStyle.SetOptStat(0)
 	plotPad.UseCurrentStyle()
-	ratioPad.UseCurrentStyle()
+	#~ ratioPad.UseCurrentStyle()
 	plotPad.Draw()	
-	ratioPad.Draw()	
+	#~ ratioPad.Draw()	
 	plotPad.cd()
 	plotPad.cd()
 	plotPad.SetGrid()
 	gStyle.SetTitleXOffset(1.45)
 
-	xMax = 0.08
+	xMax = 10
 	if trackType == "Inner":
-		xMax = 0.2
+		xMax = 10
 	if trackType == "Outer":
-		xMax = 0.4
+		xMax = 10
 
-	plotPad.DrawFrame(0,0,6000,xMax,";M [GeV]; mass resolution")
+	plotPad.DrawFrame(0,0,500,xMax,";p_{T} [GeV]; #chi^{2}/N_{dof}")
 
 	graph2016BE.Draw("samepe")
 	graph2017BE.Draw("samepe")
-	graphCBE.Draw("samepe")
 	graph2017BE.SetLineColor(kRed)
 	graph2017BE.SetMarkerColor(kRed)
-	graphCBE.SetLineColor(kBlue)
-	graphCBE.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -261,30 +250,19 @@ def compareMassRes(trackType):
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BE,"Cruijff","l")
-	leg.AddEntry(graph2017BE,"Double CB","l")
-	leg.AddEntry(graphCBE,"Crystal Ball","l")
+	leg.AddEntry(graph2016BE,"Double-Sided CB","l")
+	leg.AddEntry(graph2017BE,"Cruiff","l")
 
 	leg.Draw()
 
 	plotPad.RedrawAxis()
 
 
-	ratioPad.cd()
 
-	ratioBE.SetLineColor(kRed)
-	ratioCBE.SetLineColor(kBlue)
-
-	ratioPad.DrawFrame(0,0.5,6000,1.5,";;ratio")
-
-	ratioBE.Draw("samepe")
-	ratioCBE.Draw("samepe")
+	canv.Print("chi2CompareVsPt2016_%s_BE.pdf"%trackType)
 
 
-	canv.Print("massResolutionCompareFunc2018_%s_BE.pdf"%trackType)
-
-
-#tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
+#~ tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]
 tracks = ["TunePNew"]
 for trackType in tracks:
 	compareMassRes(trackType)
