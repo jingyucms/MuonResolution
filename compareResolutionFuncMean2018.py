@@ -45,19 +45,19 @@ def getRatio(result,result2,label):
 	
 	masses = result["mass"]
 	massErr = result["massErr"]
-	sigma = result["sigma"]
-	sigmaErr = result["sigmaErr"]	
+	mean = result["mean"]
+	meanErr = result["meanErr"]	
 	masses2 = result2["mass"]
 	massErr2 = result2["massErr"]
-	sigma2 = result2["sigma"]
-	sigmaErr2 = result2["sigmaErr"]	
+	mean2 = result2["mean"]
+	meanErr2 = result2["meanErr"]	
 	
 	
 	ratio  = TGraphErrors(len(masses))
 	ratio.SetName(label)
 	for i,mass in enumerate(masses):     
-		ratio   .SetPoint(i,mass,sigma[i]/sigma2[i])
-		ratio   .SetPointError(i,massErr[i],(sigma[i]/sigma2[i])*math.sqrt((sigmaErr[i]/sigma[i])**2+(sigmaErr2[i]/sigma2[i])**2))
+		ratio   .SetPoint(i,mass,mean[i]/mean2[i])
+		ratio   .SetPointError(i,massErr[i],(mean[i]/mean2[i])*math.sqrt((meanErr[i]/mean[i])**2+(meanErr2[i]/mean2[i])**2))
 	
 	return ratio
 	
@@ -66,14 +66,14 @@ def getGraph(result,label):
 	
 	masses = result["mass"]
 	massErr = result["massErr"]
-	sigma = result["sigma"]
-	sigmaErr = result["sigmaErr"]
+	mean = result["mean"]
+	meanErr = result["meanErr"]
 	
 	res  = TGraphAsymmErrors(len(masses))
 	res.SetName(label)
 	for i,mass in enumerate(masses):        
-		res.SetPoint(i,mass,sigma[i])
-		res.SetPointError(i,massErr[i],massErr[i],sigmaErr[i],sigmaErr[i])
+		res.SetPoint(i,mass,mean[i])
+		res.SetPointError(i,massErr[i],massErr[i],meanErr[i],meanErr[i])
 	
 	return res
 
@@ -133,7 +133,7 @@ def compareMassRes(trackType):
 	if trackType == "Outer":
 		xMax = 0.4
 
-	plotPad.DrawFrame(0,0,6000,xMax,";M [GeV]; mass resolution")
+	plotPad.DrawFrame(0,-0.05,6000,0.05,";M [GeV]; mass resolution")
 
 	graph2016BB.Draw("samepe")
 	graph2017BB.Draw("samepe")
@@ -189,13 +189,13 @@ def compareMassRes(trackType):
 	ratioBB.SetLineColor(kRed)
 	ratioCBB.SetLineColor(kBlue)
 
-	ratioPad.DrawFrame(0,0.5,6000,1.5,";ratio")
+	ratioPad.DrawFrame(0,0.5,6000,2.5,";ratio")
 
 	ratioBB.Draw("samepe")
 	ratioCBB.Draw("samepe")
 
 
-	canv.Print("massResolutionCompareFunc2018_%s_BB.pdf"%trackType)
+	canv.Print("massResolutionCompareFuncMean2018_%s_BB.pdf"%trackType)
 	
 	
 	canv = TCanvas("c1","c1",800,1200)
@@ -219,7 +219,7 @@ def compareMassRes(trackType):
 	if trackType == "Outer":
 		xMax = 0.4
 
-	plotPad.DrawFrame(0,0,6000,xMax,";M [GeV]; mass resolution")
+	plotPad.DrawFrame(0,-0.05,6000,0.05,";M [GeV]; mass resolution")
 
 	graph2016BE.Draw("samepe")
 	graph2017BE.Draw("samepe")
@@ -281,7 +281,7 @@ def compareMassRes(trackType):
 	ratioCBE.Draw("samepe")
 
 
-	canv.Print("massResolutionCompareFunc2018_%s_BE.pdf"%trackType)
+	canv.Print("massResolutionCompareFuncMean2018_%s_BE.pdf"%trackType)
 
 
 #tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]

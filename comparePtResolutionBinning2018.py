@@ -81,12 +81,12 @@ def getRatio(result,result2,label):
 
 def compareMassRes(trackType):
 	
-	fileDefaultBB = open("Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	fileORBB = open("BoostedWindowLarge/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	fileNoBB = open("BoostedWindowSmall/MassResolutionVsPt_%s_BB.pkl"%trackType)
-	fileDefaultBE = open("Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
-	fileORBE = open("BoostedWindowLarge/MassResolutionVsPt_%s_BE.pkl"%trackType)
-	fileNoBE = open("BoostedWindowSmall/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileDefaultBB = open("2018Boosteddefault/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileORBB = open("2018BoostedRebin2/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileNoBB = open("2018BoostedRebin4/MassResolutionVsPt_%s_BB.pkl"%trackType)
+	fileDefaultBE = open("2018Boosteddefault/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileORBE = open("2018BoostedRebin2/MassResolutionVsPt_%s_BE.pkl"%trackType)
+	fileNoBE = open("2018BoostedRebin4/MassResolutionVsPt_%s_BE.pkl"%trackType)
 
 	resultsDefaultBB = pickle.load(fileDefaultBB)
 	resultsORBB = pickle.load(fileORBB)
@@ -174,9 +174,9 @@ def compareMassRes(trackType):
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graphDefaultBB,"75-105 GeV","l")
-	leg.AddEntry(graphORBB,"70-110 GeV","l")
-	leg.AddEntry(graphNoBB,"80-100 GeV","l")
+	leg.AddEntry(graphDefaultBB,"0.5 GeV Binning","l")
+	leg.AddEntry(graphORBB,"1 GeV Binning","l")
+	leg.AddEntry(graphNoBB,"2 GeV Binning","l")
 
 	leg.Draw()
 
@@ -193,7 +193,7 @@ def compareMassRes(trackType):
 	ratioORBB.Draw("samepe")
 	ratioNoBB.Draw("samepe")
 
-	canv.Print("massResolutionVsPtWindow_%s_BB.pdf"%trackType)
+	canv.Print("massResolutionVsPtBinning2018_%s_BB.pdf"%trackType)
 	
 	canv = TCanvas("c1","c1",800,1200)
 
@@ -258,9 +258,9 @@ def compareMassRes(trackType):
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graphDefaultBE,"75-105 GeV","l")
-	leg.AddEntry(graphORBE,"70-110 GeV","l")
-	leg.AddEntry(graphNoBE,"80-100 GeV","l")
+	leg.AddEntry(graphDefaultBE,"0.5 GeV Binning","l")
+	leg.AddEntry(graphORBE,"1 GeV Binning","l")
+	leg.AddEntry(graphNoBE,"2 GeV Binning","l")
 
 	leg.Draw()
 
@@ -278,7 +278,7 @@ def compareMassRes(trackType):
 	ratioNoBE.Draw("samepe")
 
 
-	canv.Print("massResolutionVsPtWindow_%s_BE.pdf"%trackType)
+	canv.Print("massResolutionVsPtBinning2018_%s_BE.pdf"%trackType)
 	
 	
 

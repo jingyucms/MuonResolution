@@ -12,7 +12,7 @@ import ROOT
 ROOT.gROOT.SetBatch(True)
 sys.argv = oldargv
 	
-mrange = [120, 200, 300, 400, 600, 800, 1000, 1300, 1600, 2000, 2500, 3100, 3800, 4500, 5500]
+mrange = [120, 200, 300, 400, 600, 800, 1000, 1300, 1600, 2000, 2500, 3100, 3800, 4500, 5500, 6500]
 #mrange = [0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500]
 
 ROOT.gROOT.LoadMacro("cruijff.C+")
@@ -46,8 +46,8 @@ sampleLists  = {
 	"2017MassBinned":["dileptonAna_resolution_dy50to120_2017.root","dileptonAna_resolution_dy120to200_2017.root","dileptonAna_resolution_dy200to400_2017.root","dileptonAna_resolution_dy400to800_2017.root","dileptonAna_resolution_dy800to1400_2017.root","dileptonAna_resolution_dy1400to2300_2017.root","dileptonAna_resolution_dy2300to3500_2017.root","dileptonAna_resolution_dy3500to4500_2017.root","dileptonAna_resolution_dy4500to6000_2017.root","dileptonAna_resolution_dy6000toInf_2017.root"],
 	"2018MassBinned":["dileptonAna_resolution_2018_dy50to120.root","dileptonAna_resolution_2018_dy120to200.root","dileptonAna_resolution_2018_dy200to400.root","dileptonAna_resolution_2018_dy400to800.root","dileptonAna_resolution_2018_dy800to1400.root","dileptonAna_resolution_2018_dy1400to2300.root","dileptonAna_resolution_2018_dy2300to3500.root","dileptonAna_resolution_2018_dy3500to4500.root","dileptonAna_resolution_2018_dy4500to6000.root","dileptonAna_resolution_2018_dy6000toInf.root"],
 	"2016PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_2016_dyPt50To100.root","dileptonAna_resolution_2016_dyPt100To250.root","dileptonAna_resolution_2016_dyPt250To400.root","dileptonAna_resolution_2016_dyPt400To600.root","dileptonAna_resolution_2016_dyPt650ToInf.root"],
-	"2017PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_dyPt50To150_1Jet_2017.root","dileptonAna_resolution_dyPt50To150_2Jets_2017.root","dileptonAna_resolution_dyPt150To250_1Jet_2017.root","dileptonAna_resolution_dyPt150To250_2Jets_2017.root","dileptonAna_resolution_dyPt250To400_1Jet_2017.root","dileptonAna_resolution_dyPt250To400_2Jets_2017.root","dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root","dileptonAna_resolution_dy_3Jets_2017.root","dileptonAna_resolution_dy_4Jets_2017.root"]
-
+	"2017PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_dyPt50To150_1Jet_2017.root","dileptonAna_resolution_dyPt50To150_2Jets_2017.root","dileptonAna_resolution_dyPt150To250_1Jet_2017.root","dileptonAna_resolution_dyPt150To250_2Jets_2017.root","dileptonAna_resolution_dyPt250To400_1Jet_2017.root","dileptonAna_resolution_dyPt250To400_2Jets_2017.root","dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root","dileptonAna_resolution_dy_3Jets_2017.root","dileptonAna_resolution_dy_4Jets_2017.root"],
+        "2018PtBinned":["dyPt150to250_1Jets_2018.root", "dyPt250to400_1Jets_2018.root", "dyPt400toInf_1Jets_2018.root", "dyPt50to150_1Jets_2018.root", "dyPt_3Jets_2018.root", "dyPt150to250_2Jets_2018.root", "dyPt250to400_2Jets_2018.root", "dyPt400toInf_2Jets_2018.root", "dyPt50to150_2Jets_2018.root", "dyPt_4Jets_2018.root"],	
 }
 
 xSecs = {
@@ -58,7 +58,9 @@ xSecs = {
 	"2017MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2018MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2016PtBinned": [1921.8,363.81428,84.014804,3.228256512,0.436041144,0.040981055],
-	"2017PtBinned": [1921.8,491.5,587.8599,27.31,10.99,6.068,5.917,2.536,2.536,119.6,40.44]	
+	"2017PtBinned": [1921.8,316.6,169.6,9.543,15.65,1.098,2.737,0.1193,0.4477,111.5,44.03],
+        "2018PtBinned": [9.543, 1.098, 0.1193, 316.6, 111.5, 15.65, 2.737, 0.4477, 169.6, 44.03],
+
 }
 
 def getBinRange(histo,mlow,mhigh):
@@ -194,7 +196,8 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 			funct.SetParLimits(3, 0., 3.)
 			funct.SetParLimits(4, 0., 4.)
 			funct.SetParLimits(5, 0., 20.)
-			funct.SetParLimits(6, 0., 20.)
+			#funct.SetParLimits(6, 0., 20.)
+			funct.FixParameter(6, 20.)
 			funct.SetParNames("Constant","Mean","Sigma","AlphaL","AlphaR","nL","nR")
 		elif "gaussExp" in fit:
 			print (">>>>>>> Using GaussExp >>>>>>>")
@@ -248,7 +251,7 @@ def doFitGeneric(hist,output,rap="BB",fit="cruijff",syst=False):
 				#~ sys =1-systfunc.GetParameter(par+1)/funct.GetParameter(par+1)
 				#~ sys = sys*funct.GetParameter(par+1)
 			#~ else:
-			sys = 0.
+			sys = 0.05*funct.GetParameter(par+1)
 			errs.append(math.sqrt(sys*sys+funct.GetParError(par+1)*funct.GetParError(par+1)))
 		if funct.GetNDF() > 0:
 			chi2.append(funct.GetChisquare()/funct.GetNDF())
@@ -444,19 +447,28 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 		f.GetXaxis().SetTitle("m(#mu^{+}#mu^{-}) [GeV]")
 		f.GetXaxis().SetRangeUser(mrange[0],mrange[len(mrange)-1])
 		if ("chi2" in f.GetName()): 
-			f.GetYaxis().SetRangeUser(0,20)            
+			f.GetYaxis().SetRangeUser(0,20)           
+			f.GetYaxis().SetTitle("#chi^{2}") 
 
 		if "Sigma" in f.GetName():
 			f.GetYaxis().SetRangeUser(0,0.15)
+			f.GetYaxis().SetTitle("Sigma")
 
 		if "AlphaR" in f.GetName():
-			f.GetYaxis().SetRangeUser(0,.4)
+			f.GetYaxis().SetRangeUser(1.,4.)
+			f.GetYaxis().SetTitle("#alpha_{R}")
 
 		if "AlphaL" in f.GetName():
-			f.GetYaxis().SetRangeUser(0.1,.6)
+			f.GetYaxis().SetRangeUser(1.,3.)
+			f.GetYaxis().SetTitle("#alpha_{L}")
 
 		if "Mean" in f.GetName():
 			f.GetYaxis().SetRangeUser(-0.035,0.05)
+			f.GetYaxis().SetTitle("Mean")
+		if "nL" in f.GetName():
+			f.GetYaxis().SetTitle("nL")
+		if "nR" in f.GetName():
+			f.GetYaxis().SetTitle("nR")
 						
 		f.Draw("AP E0")
 		
@@ -471,17 +483,17 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 				fun.SetParameters(0.,1E-5,-1.E-8,2E-12,-2E-16)
 				fun.SetParLimits(1, 1.0E-6, 1.0E-4)
 				fun.SetParLimits(2,-1.0E-7,-1.0E-9)
-#                fun.SetParLimits(4,-3.0E-16,-1E-16)
-				#                fun.FixParameter(3,0.)
+		                fun.SetParLimits(4,-1.5E-16,1.0E-20)
+				#fun.FixParameter(3,0.)
 #                fun.FixParameter(3,0.)
-#                fun.FixParameter(4,0.)
+                		#fun.FixParameter(4,0.)
 			elif "AlphaR" in f.GetName(): 
 				fun.SetParameters(0.25, 1E-6, -1.E-9, 1.E-12, -1.E-16)
 				fun.SetParLimits(1, 1E-7, 1E-5)
 				fun.SetParLimits(2, -1E-8 ,-1E-10)                
 				fun.SetParLimits(3, 1E-14 ,1E-11)                
 				fun.FixParameter(4,0.)
-				fun.FixParameter(3,0.)
+				#fun.FixParameter(3,0.)
 #                fun.FixParameter(2,0.)
 #                fun.FixParameter(1,0.)
 			elif "AlphaL" in f.GetName(): 
@@ -492,26 +504,32 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 #                fun.SetParLimits(4, 1E-18, 1E-10)
 				fun.FixParameter(4,0.)
 				fun.FixParameter(3,0.)
+			elif "nL" in f.GetName():
+				fun.FixParameter(4, 0.)
+				fun.FixParameter(3, 0.)
+			elif "nR" in f.GetName():
+				fun.SetParLimits(0, 0., 30.)
+				fun.FixParameter(4, 0.)
 #                fun.FixParameter(2,0.)
 			elif "Mean" in f.GetName():
 				fun.SetParameters(0.004,-3E-5,1E-10,-1E-12,1.E-16)
 				fun.SetParLimits(1,-1E-4,-1E-6)
-				fun.SetParLimits(2, 1E-12,1E-8)
-				fun.SetParLimits(3,-1E-12,-5E-14)
-				fun.FixParameter(4,0.)
-				
-#			f.Fit(fun,"MBFE+")            
-#			fun.Draw("SAME")
+				fun.SetParLimits(2, 1E-11,1E-8)
+				fun.SetParLimits(3,-5E-13,-5E-14)
+				fun.SetParLimits(4,1.5E-18, 1.5E-16)
+				#fun.FixParameter(4, 0.)
+			f.Fit(fun,"MBFE+")            
+			fun.Draw("SAME")
 
 		
 			latexFit = ROOT.TLatex()
 			latexFit.SetTextFont(42)
 			latexFit.SetTextSize(0.030)
 			latexFit.SetNDC(True)        
-#			for par in range(fun.GetNpar()):
-#				yPos = 0.74-0.04*(float(par))
-#				latexFit.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(fun.GetParName(par),fun.GetParameter(par),fun.GetParError(par)))
-#			latexFit.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(fun.GetChisquare(),fun.GetNDF(),fun.GetChisquare()/fun.GetNDF()))
+			for par in range(fun.GetNpar()):
+				yPos = 0.74-0.04*(float(par))
+				latexFit.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(fun.GetParName(par),fun.GetParameter(par),fun.GetParError(par)))
+			latexFit.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(fun.GetChisquare(),fun.GetNDF(),fun.GetChisquare()/fun.GetNDF()))
 			
 		latex = ROOT.TLatex()
 		latex.SetTextFont(42)
@@ -581,7 +599,7 @@ def makeMassRes(inputfile,output,funct,trackType,weights):
 	resBB.GetXaxis().SetTitle("m(#mu^{+}#mu^{-}) [GeV]")
 	resBB.GetYaxis().SetRangeUser(0,.15)
 	resBB.GetXaxis().SetRangeUser(mrange[0],mrange[len(mrange)-1])
-	#resBB.GetFunction("fun").SetLineColor(ROOT.kRed+1)
+	resBB.GetFunction("fun").SetLineColor(ROOT.kRed+1)
 	resBB.Draw("AP E0")
 	
 	resBE.SetMarkerStyle(20)
@@ -595,7 +613,7 @@ def makeMassRes(inputfile,output,funct,trackType,weights):
  #   resBE.GetXaxis().SetTitle("m(#mu^{+}#mu^{-}) [GeV]")
 	resBE.GetYaxis().SetRangeUser(0,.15)
 	resBE.GetXaxis().SetRangeUser(mrange[0],mrange[len(mrange)-1])
-	#resBE.GetFunction("fun").SetLineColor(ROOT.kGreen+2)
+	resBE.GetFunction("fun").SetLineColor(ROOT.kGreen+2)
 	resBE.Draw("PE0 SAME")
 
 	latexFitBB = ROOT.TLatex()
@@ -611,12 +629,12 @@ def makeMassRes(inputfile,output,funct,trackType,weights):
 	latexFitBE.SetTextColor(ROOT.kGreen+2)
 	latexFitBB.DrawLatex(0.19, 0.78,"BB Category")
 	latexFitBE.DrawLatex(0.60, 0.78,"BE+EE Category")
-	#for par in range(resBB.GetFunction("fun").GetNpar()):
-	#	yPos = 0.74-0.04*(float(par))
-	#	latexFitBB.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(resBB.GetFunction("fun").GetParName(par),resBB.GetFunction("fun").GetParameter(par),resBB.GetFunction("fun").GetParError(par)))
-	#	latexFitBE.DrawLatex(0.60, yPos,"%s = %5.3g #pm %5.3g"%(resBE.GetFunction("fun").GetParName(par),resBE.GetFunction("fun").GetParameter(par),resBE.GetFunction("fun").GetParError(par)))
-	#latexFitBB.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(resBB.GetFunction("fun").GetChisquare(),resBB.GetFunction("fun").GetNDF(),resBB.GetFunction("fun").GetChisquare()/resBB.GetFunction("fun").GetNDF()))
-	#latexFitBE.DrawLatex(0.60, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(resBE.GetFunction("fun").GetChisquare(),resBE.GetFunction("fun").GetNDF(),resBE.GetFunction("fun").GetChisquare()/resBE.GetFunction("fun").GetNDF()))
+	for par in range(resBB.GetFunction("fun").GetNpar()):
+		yPos = 0.74-0.04*(float(par))
+		latexFitBB.DrawLatex(0.19, yPos,"%s = %5.3g #pm %5.3g"%(resBB.GetFunction("fun").GetParName(par),resBB.GetFunction("fun").GetParameter(par),resBB.GetFunction("fun").GetParError(par)))
+		latexFitBE.DrawLatex(0.60, yPos,"%s = %5.3g #pm %5.3g"%(resBE.GetFunction("fun").GetParName(par),resBE.GetFunction("fun").GetParameter(par),resBE.GetFunction("fun").GetParError(par)))
+	latexFitBB.DrawLatex(0.19, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(resBB.GetFunction("fun").GetChisquare(),resBB.GetFunction("fun").GetNDF(),resBB.GetFunction("fun").GetChisquare()/resBB.GetFunction("fun").GetNDF()))
+	latexFitBE.DrawLatex(0.60, 0.54, "#chi^{2}/ndf = %5.1f / %2.0f = %4.2f" %(resBE.GetFunction("fun").GetChisquare(),resBE.GetFunction("fun").GetNDF(),resBE.GetFunction("fun").GetChisquare()/resBE.GetFunction("fun").GetNDF()))
 		
 #    leg = ROOT.TLegend(.35,.7,.50,.80,"","brNDC")
 #    leg.AddEntry(resBB,"BB")
