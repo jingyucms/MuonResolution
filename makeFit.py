@@ -68,17 +68,11 @@ fit_min = histo.GetMean()+xMinFactor*histo.GetRMS()
 fit_max = histo.GetMean()+xMaxFactor*histo.GetRMS()
 
 # fit with a gaussian to use parameters of the fit for the CB...
-gaus = ROOT.TF1("gaus","gaus",fit_min,fit_max)
-gaus.SetParameters(0,histo.GetMean(),histo.GetRMS())
+funct = ROOT.TF1("gaus","gaus",fit_min,fit_max)
+funct.SetParameters(0,histo.GetMean(),histo.GetRMS())
 histo.Fit("gaus","M0R+")
 
 	
-print (">>>>>>> Using Cruijff Function >>>>>>>")
-funct = ROOT.TF1("cruijff",ROOT.cruijff, histo.GetMean() +xMinFactor*histo.GetRMS(),  histo.GetMean() +xMaxFactor*histo.GetRMS(),5)
-funct.SetParameters(gaus.GetParameter(0), gaus.GetParameter(1), gaus.GetParameter(2), 0., 0.) #15, 0.001)             
-funct.SetParNames("Constant","Mean","Sigma","AlphaL","AlphaR")        
-histo.Fit("cruijff","M0R+")
-
 
 funct.SetLineColor(ROOT.kBlue)
 funct.SetLineWidth(2)
