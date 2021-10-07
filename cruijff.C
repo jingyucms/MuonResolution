@@ -1,3 +1,4 @@
+#include "TMath.h"
 Double_t cruijff( Double_t *x, Double_t * par) {
 
  // par[0] = normalization
@@ -10,6 +11,6 @@ Double_t cruijff( Double_t *x, Double_t * par) {
  double sigma = par[2] ; //dx<0 ? par[2]: par[3] ;
  double alpha = dx<0 ? par[3]: par[4] ;
  double f = 2*sigma*sigma + alpha*dx*dx ;
- return par[0] * exp(-dx*dx/f); 
+ return par[0] * TMath::Exp(-dx*dx/f); 
 
 }

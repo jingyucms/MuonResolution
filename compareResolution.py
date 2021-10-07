@@ -1,4 +1,4 @@
-from ROOT import *
+from ROOT import TGraphAsymmErrors, TCanvas, TPad, TGraphErrors, gStyle, kRed, kBlue, kBlack, TLatex, TLegend, TLine, kDashed
 import pickle
 import math
 from setTDRStyle import setTDRStyle
@@ -80,39 +80,35 @@ def getGraph(result,label):
 
 def compareMassRes(trackType):
 	
-	file2016BB = open("default2016/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2016BE = open("default2016/MassResolutionVsMass_%s_BE.pkl"%trackType)
-	file2017BB = open("default/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2017BE = open("default/MassResolutionVsMass_%s_BE.pkl"%trackType)
-	file2018BB = open("default2018/MassResolutionVsMass_%s_BB.pkl"%trackType)
-	file2018BE = open("default2018/MassResolutionVsMass_%s_BE.pkl"%trackType)
+	fileEOYBB = open("MassResolutionVsMass_TunePNew_BB_EOY.pkl","rb")
+	fileEOYBE = open("MassResolutionVsMass_TunePNew_BE_EOY.pkl","rb")
+	fileULBB = open("default/MassResolutionVsMass_TunePNew_BB.pkl","rb")
+	fileULBE = open("default/MassResolutionVsMass_TunePNew_BE.pkl","rb")
 
-	results2016BB = pickle.load(file2016BB)
-	results2016BE = pickle.load(file2016BE)
-	results2017BB = pickle.load(file2017BB)
-	results2017BE = pickle.load(file2017BE)
-	results2018BB = pickle.load(file2018BB)
-	results2018BE = pickle.load(file2018BE)
+	resultsEOYBB = pickle.load(fileEOYBB)
+	resultsEOYBE = pickle.load(fileEOYBE)
+	resultsULBB = pickle.load(fileULBB)
+	resultsULBE = pickle.load(fileULBE)
 
-	graph2016BB = getGraph(results2016BB,"2016BB")
-	graph2016BE = getGraph(results2016BE,"2016BE")
-	graph2017BB = getGraph(results2017BB,"2017BB")
-	graph2017BE = getGraph(results2017BE,"2017BE")
-	graph2018BB = getGraph(results2018BB,"2018BB")
-	graph2018BE = getGraph(results2018BE,"2018BE")
+
+	graphEOYBB = getGraph(resultsEOYBB,"EOYBB")
+	graphEOYBE = getGraph(resultsEOYBE,"EOYBE")
+	graphULBB = getGraph(resultsULBB,"ULBB")
+	graphULBE = getGraph(resultsULBE,"ULBE")
+
 		
 	
-	ratioBB = 	getRatio(results2016BB,results2017BB,"ratioBB")
-	ratioBE = 	getRatio(results2016BE,results2017BE,"ratioBE")
-	ratioBB18 = getRatio(results2016BB,results2018BB,"ratioBB18")
-	ratioBE18 = getRatio(results2016BE,results2018BE,"ratioBE18")
+	ratioBB = 	getRatio(resultsEOYBB,resultsULBB,"ratioBB")
+	ratioBE = 	getRatio(resultsEOYBE,resultsULBE,"ratioBE")
 
 
 
-	canv = TCanvas("c1","c1",800,1200)
 
-	plotPad = TPad("plotPad","plotPad",0,0.3,1,1)
-	ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
+	canv = TCanvas("c1","c1",800,800)
+
+	plotPad = TPad("plotPad","plotPad",0.01,0.01,0.99,0.99)
+
+	ratioPad = TPad("ratioPad","ratioPad",0.01, 0.01, 0.99, 0.29)
 	style = setTDRStyle()
 	gStyle.SetOptStat(0)
 	plotPad.UseCurrentStyle()
@@ -121,61 +117,93 @@ def compareMassRes(trackType):
 	ratioPad.Draw()	
 	plotPad.cd()
 	plotPad.cd()
-	plotPad.SetGrid()
+	# ~ plotPad.SetGrid()
 	gStyle.SetTitleXOffset(1.45)
 	gStyle.SetTitleYOffset(1.55)
 
-	xMax = 0.08
-	if trackType == "Inner":
-		xMax = 0.2
-	if trackType == "Outer":
-		xMax = 0.4
+	plotPad.SetTopMargin(0.05)
+	plotPad.SetLeftMargin(0.13)
+	plotPad.SetRightMargin(0.045)
+	plotPad.SetBottomMargin(0.3)	
+	
+	ratioPad.SetTopMargin(0)
+	ratioPad.SetTopMargin(0.05)
+	ratioPad.SetLeftMargin(0.13)
+	ratioPad.SetRightMargin(0.045)	
+	ratioPad.SetBottomMargin(0.4)	
 
-	plotPad.DrawFrame(0,0,6000,xMax,";M [GeV]; mass resolution")
+	#~ xMax = 0.08
+	#~ if trackType == "Inner":
+		#~ xMax = 0.2
+	#~ if trackType == "Outer":
+		#~ xMax = 0.4
 
-	graph2016BB.Draw("samepe")
-	graph2017BB.Draw("samepe")
-	graph2018BB.Draw("samepe")
-	graph2017BB.SetLineColor(kRed)
-	graph2017BB.SetMarkerColor(kRed)
-	graph2018BB.SetLineColor(kBlue)
-	graph2018BB.SetMarkerColor(kBlue)
+	graphEOYBB.SetMarkerStyle(22)
+	graphEOYBB.SetMarkerSize(2)
+	graphEOYBB.SetMarkerColor(kBlack)
+	graphEOYBB.SetLineColor(kBlack)
+	graphEOYBB.SetLineWidth(2)
+	graphEOYBB.SetFillColor(0)
+	graphEOYBB.SetTitle("Dimuon mass resolution vs pT for %s tracks"%trackType)
+	graphEOYBB.GetYaxis().SetTitle("Mass resolution")
+	# ~ res_data.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) [GeV]")
+	graphEOYBB.GetYaxis().SetTitleFont(42)
+	graphEOYBB.GetYaxis().SetTitleSize(0.05)
+	graphEOYBB.GetYaxis().SetTitleOffset(1.35)
+	graphEOYBB.GetYaxis().SetLabelFont(42)
+	graphEOYBB.GetYaxis().SetLabelSize(0.038)
+	graphEOYBB.GetYaxis().SetRangeUser(0,0.1)
+	graphEOYBB.GetXaxis().SetTitleSize(0.0)
+	graphEOYBB.GetXaxis().SetLabelSize(0.0)
+
+	graphEOYBB.GetXaxis().SetRangeUser(0,6500)
+	graphEOYBB.Draw("AP E0")
+
+	graphULBB.Draw("samepe")
+	graphEOYBB.SetMarkerSize(2)
+	graphULBB.SetMarkerSize(2)
+	graphEOYBB.SetLineWidth(2)
+	graphULBB.SetLineWidth(2)
+	graphEOYBB.SetMarkerStyle(20)
+	graphULBB.SetMarkerStyle(21)
+	graphULBB.SetLineColor(kRed)
+	graphULBB.SetMarkerColor(kRed)
 
 	latex = TLatex()
-	latex.SetTextFont(42)
-	latex.SetTextAlign(31)
-	latex.SetTextSize(0.04)
-	latex.SetNDC(True)
+	# ~ latex.SetTextFont(42)
+	# ~ latex.SetTextAlign(31)
+	# ~ latex.SetTextSize(0.04)
+	# ~ latex.SetNDC(True)
 	latexCMS = TLatex()
 	latexCMS.SetTextFont(61)
 	latexCMS.SetTextSize(0.055)
 	latexCMS.SetNDC(True)
 	latexCMSExtra = TLatex()
 	latexCMSExtra.SetTextFont(52)
-	latexCMSExtra.SetTextSize(0.03)
+	latexCMSExtra.SetTextSize(.03/0.7)
 	latexCMSExtra.SetNDC(True) 
 
-	latex.DrawLatex(0.95, 0.96, "(13 TeV)")
+	latex.DrawLatexNDC(0.50, 0.96, "#scale[0.8]{#font[42]{       2017, 42.1 fb^{-1} (13 TeV)}}")
 
-	cmsExtra = "#splitline{Preliminary}{}"
+	cmsExtra = "Preliminary"
 	latexCMS.DrawLatex(0.19,0.88,"CMS")
 	if "Simulation" in cmsExtra:
 		yLabelPos = 0.81	
 	else:
 		yLabelPos = 0.84	
 
-	latexCMSExtra.DrawLatex(0.19,yLabelPos,"%s"%(cmsExtra))			
+	latexCMSExtra.DrawLatex(0.19,yLabelPos,"%s"%(cmsExtra))					
 
 
-	leg = TLegend(0.52, 0.76, 0.95, 0.91,"%s BB"%trackType,"brNDC")
+	leg = TLegend(0.5,0.65,0.95,0.90,"Both muons |#eta| < 1.2","brNDC")
 	leg.SetFillColor(10)
 	leg.SetFillStyle(0)
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BB,"2016","l")
-	leg.AddEntry(graph2017BB,"2017","l")
-	leg.AddEntry(graph2018BB,"2018","l")
+	leg.AddEntry(graphEOYBB,"EOY ReReco","l")
+	leg.AddEntry(graphULBB,"Legacy ReReco","l")
+
 
 	leg.Draw()
 
@@ -184,27 +212,56 @@ def compareMassRes(trackType):
 
 	ratioPad.cd()
 
-	ratioBB.SetLineColor(kRed)
-	ratioBB18.SetLineColor(kBlue)
+	ratioBB.GetYaxis().SetTitle("#splitline{EOY ReReco/}{Legacy ReReco}")
+	ratioBB.GetXaxis().SetNoExponent(0)
+	ratioBB.GetXaxis().SetTitleFont(42)
+	ratioBB.GetXaxis().SetTitleOffset(0.85)
+	ratioBB.GetXaxis().SetTitleSize(0.2)
+	ratioBB.GetXaxis().SetLabelColor(1)
+	ratioBB.GetXaxis().SetLabelOffset(0.01)
+	ratioBB.GetXaxis().SetLabelFont(42)
+	ratioBB.GetXaxis().SetLabelSize(0.17)		
+	ratioBB.GetXaxis().SetTitle("GEN dimuon mass (GeV)")
+	ratioBB.GetYaxis().SetRangeUser(0.5,1.5)
+	ratioBB.GetXaxis().SetRangeUser(0,6500)
+	ratioBB.GetYaxis().SetTitleOffset(0.475)
+	ratioBB.GetYaxis().SetTitleSize(0.12)
+	ratioBB.GetYaxis().SetTitleFont(42)
+	ratioBB.GetYaxis().SetLabelSize(0.14)    
+	ratioBB.GetYaxis().SetLabelOffset(0.007)    
+	ratioBB.GetYaxis().SetLabelFont(42)    
+	ratioBB.GetYaxis().SetNdivisions(505)       
+	
 	ratioBB.SetMarkerColor(kRed)
-	ratioBB18.SetMarkerColor(kBlue)
-
-	ratioPad.DrawFrame(0,0.5,6000,1.5,";;ratio")
-
-	ratioBB.Draw("samepe")
-	ratioBB18.Draw("samepe")
-
-	l = TLine(0,1,6000,1)
-	l.SetLineStyle(kDashed)
-	l.Draw()
+	ratioBB.SetLineColor(kRed)
+	ratioBB.SetLineWidth(2)
+	ratioBB.SetMarkerStyle(20)
+	ratioBB.SetMarkerSize(2)
 	
-	canv.Print("massResolutionCompare_%s_BB.pdf"%trackType)
-	
-	
-	canv = TCanvas("c1","c1",800,1200)
 
-	plotPad = TPad("plotPad","plotPad",0,0.3,1,1)
-	ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
+
+	line = TLine(10,1,6500,1)
+
+	line.SetLineColor(kBlack)
+	line.SetLineStyle(kDashed)
+	line.SetLineWidth(2)
+	
+	
+	ratioBB.Draw("A P E")
+	ratioBB.GetXaxis().SetRangeUser(0,6500)
+
+	line.Draw()
+	ratioBB.Draw("samePE")
+	ratioPad.RedrawAxis()
+	
+	canv.Print("massResolutionCompareUL_%s_BB.pdf"%trackType)
+	
+	
+	canv = TCanvas("c1","c1",800,800)
+
+	plotPad = TPad("plotPad","plotPad",0.01,0.01,0.99,0.99)
+
+	ratioPad = TPad("ratioPad","ratioPad",0.01, 0.01, 0.99, 0.29)
 	style = setTDRStyle()
 	gStyle.SetOptStat(0)
 	plotPad.UseCurrentStyle()
@@ -213,61 +270,94 @@ def compareMassRes(trackType):
 	ratioPad.Draw()	
 	plotPad.cd()
 	plotPad.cd()
-	plotPad.SetGrid()
+	# ~ plotPad.SetGrid()
 	gStyle.SetTitleXOffset(1.45)
 	gStyle.SetTitleYOffset(1.55)
 
-	xMax = 0.08
-	if trackType == "Inner":
-		xMax = 0.2
-	if trackType == "Outer":
-		xMax = 0.4
+	plotPad.SetTopMargin(0.05)
+	plotPad.SetLeftMargin(0.13)
+	plotPad.SetRightMargin(0.045)
+	plotPad.SetBottomMargin(0.3)	
+	
+	ratioPad.SetTopMargin(0)
+	ratioPad.SetTopMargin(0.05)
+	ratioPad.SetLeftMargin(0.13)
+	ratioPad.SetRightMargin(0.045)	
+	ratioPad.SetBottomMargin(0.4)	
 
-	plotPad.DrawFrame(0,0,6000,xMax,";M [GeV]; mass resolution")
+	#~ xMax = 0.08
+	#~ if trackType == "Inner":
+		#~ xMax = 0.2
+	#~ if trackType == "Outer":
+		#~ xMax = 0.4
 
-	graph2016BE.Draw("samepe")
-	graph2017BE.Draw("samepe")
-	graph2018BE.Draw("samepe")
-	graph2017BE.SetLineColor(kRed)
-	graph2017BE.SetMarkerColor(kRed)
-	graph2018BE.SetLineColor(kBlue)
-	graph2018BE.SetMarkerColor(kBlue)
+	graphEOYBE.SetMarkerStyle(22)
+	graphEOYBE.SetMarkerSize(2)
+	graphEOYBE.SetMarkerColor(kBlack)
+	graphEOYBE.SetLineColor(kBlack)
+	graphEOYBE.SetLineWidth(2)
+	graphEOYBE.SetFillColor(0)
+	graphEOYBE.SetTitle("Dimuon mass resolution vs pT for %s tracks"%trackType)
+	graphEOYBE.GetYaxis().SetTitle("Mass resolution")
+	# ~ res_data.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) [GeV]")
+	graphEOYBE.GetYaxis().SetTitleFont(42)
+	graphEOYBE.GetYaxis().SetTitleSize(0.05)
+	graphEOYBE.GetYaxis().SetTitleOffset(1.35)
+	graphEOYBE.GetYaxis().SetLabelFont(42)
+	graphEOYBE.GetYaxis().SetLabelSize(0.038)
+	graphEOYBE.GetYaxis().SetRangeUser(0,.2)
+	graphEOYBE.GetXaxis().SetTitleSize(0.0)
+	graphEOYBE.GetXaxis().SetLabelSize(0.0)
+
+	graphEOYBE.GetXaxis().SetRangeUser(0,6500)
+	graphEOYBE.Draw("AP E0")
+
+	graphULBE.Draw("samepe")
+	graphEOYBE.SetMarkerSize(2)
+	graphULBE.SetMarkerSize(2)
+	graphEOYBE.SetLineWidth(2)
+	graphULBE.SetLineWidth(2)
+	graphEOYBE.SetMarkerStyle(20)
+	graphULBE.SetMarkerStyle(21)
+	graphULBE.SetLineColor(kRed)
+	graphULBE.SetMarkerColor(kRed)
+
+
 
 	latex = TLatex()
-	latex.SetTextFont(42)
-	latex.SetTextAlign(31)
-	latex.SetTextSize(0.04)
-	latex.SetNDC(True)
+	# ~ latex.SetTextFont(42)
+	# ~ latex.SetTextAlign(31)
+	# ~ latex.SetTextSize(0.04)
+	# ~ latex.SetNDC(True)
 	latexCMS = TLatex()
 	latexCMS.SetTextFont(61)
 	latexCMS.SetTextSize(0.055)
 	latexCMS.SetNDC(True)
 	latexCMSExtra = TLatex()
 	latexCMSExtra.SetTextFont(52)
-	latexCMSExtra.SetTextSize(0.03)
+	latexCMSExtra.SetTextSize(.03/0.7)
 	latexCMSExtra.SetNDC(True) 
 
-	latex.DrawLatex(0.95, 0.96, "(13 TeV)")
+	latex.DrawLatexNDC(0.50, 0.96, "#scale[0.8]{#font[42]{       2017, 42.1 fb^{-1} (13 TeV)}}")
 
-	cmsExtra = "#splitline{Preliminary}{}"
+	cmsExtra = "Preliminary"
 	latexCMS.DrawLatex(0.19,0.88,"CMS")
 	if "Simulation" in cmsExtra:
 		yLabelPos = 0.81	
 	else:
 		yLabelPos = 0.84	
 
-	latexCMSExtra.DrawLatex(0.19,yLabelPos,"%s"%(cmsExtra))			
+	latexCMSExtra.DrawLatex(0.19,yLabelPos,"%s"%(cmsExtra))					
 
 
-	leg = TLegend(0.52, 0.76, 0.95, 0.91,"%s BE"%trackType,"brNDC")
+	leg = TLegend(0.5,0.65,0.95,0.90,"At least one muon |#eta| > 1.2","brNDC")
 	leg.SetFillColor(10)
 	leg.SetFillStyle(0)
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
-	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BE,"2016","l")
-	leg.AddEntry(graph2017BE,"2017","l")
-	leg.AddEntry(graph2018BE,"2018","l")
+	leg.SetBorderSize(1)	
+	leg.AddEntry(graphEOYBE,"EOY ReReco","lp")
+	leg.AddEntry(graphULBE,"Legacy  ReReco","lp")
 
 	leg.Draw()
 
@@ -276,22 +366,52 @@ def compareMassRes(trackType):
 
 	ratioPad.cd()
 
-	ratioBE.SetLineColor(kRed)
-	ratioBE18.SetLineColor(kBlue)
+	ratioBE.GetYaxis().SetTitle("#splitline{EOY ReReco/}{Legacy ReReco}")
+	ratioBE.GetXaxis().SetNoExponent(0)
+	ratioBE.GetXaxis().SetTitleFont(42)
+	ratioBE.GetXaxis().SetTitleOffset(0.85)
+	ratioBE.GetXaxis().SetTitleSize(0.2)
+	ratioBE.GetXaxis().SetLabelColor(1)
+	ratioBE.GetXaxis().SetLabelOffset(0.01)
+	ratioBE.GetXaxis().SetLabelFont(42)
+	ratioBE.GetXaxis().SetLabelSize(0.17)		
+	ratioBE.GetXaxis().SetTitle("GEN dimuon mass (GeV)")
+	ratioBE.GetYaxis().SetRangeUser(0.5,1.5)
+	ratioBE.GetXaxis().SetRangeUser(0,6500)
+	ratioBE.GetYaxis().SetTitleOffset(0.475)
+	ratioBE.GetYaxis().SetTitleSize(0.12)
+	ratioBE.GetYaxis().SetTitleFont(42)
+	ratioBE.GetYaxis().SetLabelSize(0.14)    
+	ratioBE.GetYaxis().SetLabelOffset(0.007)    
+	ratioBE.GetYaxis().SetLabelFont(42)    
+	ratioBE.GetYaxis().SetNdivisions(505)       
+	
 	ratioBE.SetMarkerColor(kRed)
-	ratioBE18.SetMarkerColor(kBlue)
+	ratioBE.SetLineColor(kRed)
+	ratioBE.SetLineWidth(2)
+	ratioBE.SetMarkerStyle(20)
+	ratioBE.SetMarkerSize(2)
+	
 
-	ratioPad.DrawFrame(0,0.5,6000,1.5,";;ratio")
 
-	l = TLine(0,1,6000,1)
-	l.SetLineStyle(kDashed)
-	l.Draw()
+	line = TLine(10,1,6500,1)
 
+	line.SetLineColor(kBlack)
+	line.SetLineStyle(kDashed)
+	line.SetLineWidth(2)
+	
+	
+	ratioBE.Draw("A P E")
+	ratioBE.GetXaxis().SetRangeUser(0,6500)
+
+	line.Draw()
+	ratioBE.Draw("samePE")
+	ratioPad.RedrawAxis()
 	ratioBE.Draw("samepe")
-	ratioBE18.Draw("samepe")
 
 
-	canv.Print("massResolutionCompare_%s_BE.pdf"%trackType)
+
+	canv.Print("massResolutionCompareUL_%s_BE.pdf"%trackType)
 
 
 #tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]

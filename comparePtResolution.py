@@ -1,4 +1,4 @@
-from ROOT import *
+from ROOT import TGraphAsymmErrors, TGraphErrors, TCanvas, TLegend, TPad, gStyle, kRed, kGreen, kBlue, TLatex
 import pickle
 import math
 from setTDRStyle import setTDRStyle
@@ -80,45 +80,52 @@ def getGraph(result,label):
 
 def comparePtRes(trackType):
 	
-	file2016BB = open("default2016Pt/PtResolutionVsPt_%s_BB.pkl"%trackType)
-	file2016BE = open("default2016Pt/PtResolutionVsPt_%s_BE.pkl"%trackType)
-	file2017BB = open("defaultPt/PtResolutionVsPt_%s_BB.pkl"%trackType)
-	file2017BE = open("defaultPt/PtResolutionVsPt_%s_BE.pkl"%trackType)
-	file2018BB = open("default2018Pt/PtResolutionVsPt_%s_BB.pkl"%trackType)
-	file2018BE = open("default2018Pt/PtResolutionVsPt_%s_BE.pkl"%trackType)
+	file2016B = open("default2016Pt/PtResolutionVsPt_%s_B.pkl"%trackType,'rb')
+	file2016O = open("default2016Pt/PtResolutionVsPt_%s_O.pkl"%trackType,'rb')
+	file2016E = open("default2016Pt/PtResolutionVsPt_%s_E.pkl"%trackType,'rb')
+	file2017B = open("defaultPtSplit/PtResolutionVsPt_%s_B.pkl"%trackType,'rb')
+	file2017O = open("defaultPtSplit/PtResolutionVsPt_%s_O.pkl"%trackType,'rb')
+	file2017E = open("defaultPtSplit/PtResolutionVsPt_%s_E.pkl"%trackType,'rb')
+	file2018B = open("default2018Pt/PtResolutionVsPt_%s_B.pkl"%trackType,'rb')
+	file2018O = open("default2018Pt/PtResolutionVsPt_%s_O.pkl"%trackType,'rb')
+	file2018E = open("default2018Pt/PtResolutionVsPt_%s_E.pkl"%trackType,'rb')
 
-	results2016BB = pickle.load(file2016BB)
-	results2016BE = pickle.load(file2016BE)
-	results2017BB = pickle.load(file2017BB)
-	results2017BE = pickle.load(file2017BE)
-	results2018BB = pickle.load(file2018BB)
-	results2018BE = pickle.load(file2018BE)
+	results2016B = pickle.load(file2016B)
+	results2016O = pickle.load(file2016O)
+	results2016E = pickle.load(file2016E)
 
-	graph2016BB = getGraph(results2016BB,"2016BB")
-	graph2016BE = getGraph(results2016BE,"2016BE")
-	graph2017BB = getGraph(results2017BB,"2017BB")
-	graph2017BE = getGraph(results2017BE,"2017BE")
-	graph2018BB = getGraph(results2018BB,"2018BB")
-	graph2018BE = getGraph(results2018BE,"2018BE")
+	results2017B = pickle.load(file2017B)
+	results2017O = pickle.load(file2017O)
+	results2017E = pickle.load(file2017E)
+
+	results2018B = pickle.load(file2018B)
+	results2018O = pickle.load(file2018O)
+	results2018E = pickle.load(file2018E)
+
+	graph2016B = getGraph(results2016B,"2016B")
+	graph2016O = getGraph(results2016O,"2016O")
+	graph2016E = getGraph(results2016E,"2016E")
+
+	graph2017B = getGraph(results2017B,"2017B")
+	graph2017O = getGraph(results2017O,"2017O")
+	graph2017E = getGraph(results2017E,"2017E")
 		
-	
-	ratioBB = 	getRatio(results2016BB,results2017BB,"ratioBB")
-	ratioBE = 	getRatio(results2016BE,results2017BE,"ratioBE")
-	ratioBB18 = getRatio(results2016BB,results2018BB,"ratioBB18")
-	ratioBE18 = getRatio(results2016BE,results2018BE,"ratioBE18")
-
+	graph2018B = getGraph(results2018B,"2018B")
+	graph2018O = getGraph(results2018O,"2018O")
+	graph2018E = getGraph(results2018E,"2018E")
+		
 
 
 	canv = TCanvas("c1","c1",800,1200)
 
-	plotPad = TPad("plotPad","plotPad",0,0.3,1,1)
-	ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
+	plotPad = TPad("plotPad","plotPad",0,0.,1,1)
+	# ~ ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
 	style = setTDRStyle()
 	gStyle.SetOptStat(0)
 	plotPad.UseCurrentStyle()
-	ratioPad.UseCurrentStyle()
+	# ~ ratioPad.UseCurrentStyle()
 	plotPad.Draw()	
-	ratioPad.Draw()	
+	# ~ ratioPad.Draw()	
 	plotPad.cd()
 	plotPad.cd()
 	plotPad.SetGrid()
@@ -131,15 +138,17 @@ def comparePtRes(trackType):
 	if trackType == "Outer":
 		xMax = 0.5
 
-	plotPad.DrawFrame(0,0,3100,xMax,";p_{T} [GeV]; p_{T} resolution [%]")
+	plotPad.DrawFrame(0,0,2000,xMax,";p_{T} [GeV]; p_{T} resolution [%]")
 
-	graph2016BB.Draw("samepe")
-	graph2017BB.Draw("samepe")
-	graph2018BB.Draw("samepe")
-	graph2017BB.SetLineColor(kRed)
-	graph2017BB.SetMarkerColor(kRed)
-	graph2018BB.SetLineColor(kBlue)
-	graph2018BB.SetMarkerColor(kBlue)
+	graph2016B.Draw("samepe")
+	# ~ graph2016O.Draw("samepe")
+	graph2016E.Draw("samepe")
+	graph2016B.SetLineColor(kRed)
+	graph2016B.SetMarkerColor(kRed)
+	graph2016O.SetLineColor(kGreen)
+	graph2016O.SetMarkerColor(kGreen)
+	graph2016E.SetLineColor(kBlue)
+	graph2016E.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -167,50 +176,34 @@ def comparePtRes(trackType):
 	latexCMSExtra.DrawLatex(0.19,yLabelPos,"%s"%(cmsExtra))			
 
 
-	leg = TLegend(0.52, 0.76, 0.95, 0.91,"%s BB"%trackType,"brNDC")
+	leg = TLegend(0.52, 0.76, 0.95, 0.91,"%s 2016"%trackType,"brNDC")
 	leg.SetFillColor(10)
 	leg.SetFillStyle(0)
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BB,"2016","l")
-	leg.AddEntry(graph2017BB,"2017","l")
-	leg.AddEntry(graph2018BB,"2018","l")
+	leg.AddEntry(graph2016B,"Barrel","l")
+	# ~ leg.AddEntry(graph2016O,"Overlap","l")
+	leg.AddEntry(graph2016E,"Endcap","l")
 
 	leg.Draw()
 
 	plotPad.RedrawAxis()
 
 
-	ratioPad.cd()
+	canv.Print("PtResolutionCompare_%s_2016.pdf"%trackType)
+	canv.Print("PtResolutionCompare_%s_2016.root"%trackType)
 
-	ratioBB.SetLineColor(kRed)
-	ratioBB18.SetLineColor(kBlue)
-	ratioBB.SetMarkerColor(kRed)
-	ratioBB18.SetMarkerColor(kBlue)
-
-	ratioPad.DrawFrame(0,0.5,3100,1.5,";;ratio")
-
-	ratioBB.Draw("samepe")
-	ratioBB18.Draw("samepe")
-
-	l = TLine(0,1,3100,1)
-	l.SetLineStyle(kDashed)
-	l.Draw()
-	
-	canv.Print("PtResolutionCompare_%s_BB.pdf"%trackType)
-	
-	
 	canv = TCanvas("c1","c1",800,1200)
 
-	plotPad = TPad("plotPad","plotPad",0,0.3,1,1)
-	ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
+	plotPad = TPad("plotPad","plotPad",0,0.,1,1)
+	# ~ ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
 	style = setTDRStyle()
 	gStyle.SetOptStat(0)
 	plotPad.UseCurrentStyle()
-	ratioPad.UseCurrentStyle()
+	# ~ ratioPad.UseCurrentStyle()
 	plotPad.Draw()	
-	ratioPad.Draw()	
+	# ~ ratioPad.Draw()	
 	plotPad.cd()
 	plotPad.cd()
 	plotPad.SetGrid()
@@ -223,15 +216,17 @@ def comparePtRes(trackType):
 	if trackType == "Outer":
 		xMax = 0.5
 
-	plotPad.DrawFrame(0,0,3100,xMax,";p_{T} [GeV]; p_{T} resolution [%]")
+	plotPad.DrawFrame(0,0,2000,xMax,";p_{T} [GeV]; p_{T} resolution [%]")
 
-	graph2016BE.Draw("samepe")
-	graph2017BE.Draw("samepe")
-	graph2018BE.Draw("samepe")
-	graph2017BE.SetLineColor(kRed)
-	graph2017BE.SetMarkerColor(kRed)
-	graph2018BE.SetLineColor(kBlue)
-	graph2018BE.SetMarkerColor(kBlue)
+	graph2017B.Draw("samepe")
+	# ~ graph2017O.Draw("samepe")
+	graph2017E.Draw("samepe")
+	graph2017B.SetLineColor(kRed)
+	graph2017B.SetMarkerColor(kRed)
+	graph2017O.SetLineColor(kGreen)
+	graph2017O.SetMarkerColor(kGreen)
+	graph2017E.SetLineColor(kBlue)
+	graph2017E.SetMarkerColor(kBlue)
 
 	latex = TLatex()
 	latex.SetTextFont(42)
@@ -259,39 +254,102 @@ def comparePtRes(trackType):
 	latexCMSExtra.DrawLatex(0.19,yLabelPos,"%s"%(cmsExtra))			
 
 
-	leg = TLegend(0.52, 0.76, 0.95, 0.91,"%s BE"%trackType,"brNDC")
+	leg = TLegend(0.52, 0.76, 0.95, 0.91,"%s 2017"%trackType,"brNDC")
 	leg.SetFillColor(10)
 	leg.SetFillStyle(0)
 	leg.SetLineColor(10)
 	leg.SetShadowColor(0)
 	leg.SetBorderSize(1)		
-	leg.AddEntry(graph2016BE,"2016","l")
-	leg.AddEntry(graph2017BE,"2017","l")
-	leg.AddEntry(graph2018BE,"2018","l")
+	leg.AddEntry(graph2017B,"Barrel","l")
+	# ~ leg.AddEntry(graph2017O,"Overlap","l")
+	leg.AddEntry(graph2017E,"Endcap","l")
 
 	leg.Draw()
 
 	plotPad.RedrawAxis()
 
 
-	ratioPad.cd()
+	canv.Print("PtResolutionCompare_%s_2017.pdf"%trackType)
+	canv.Print("PtResolutionCompare_%s_2017.root"%trackType)
 
-	ratioBE.SetLineColor(kRed)
-	ratioBE18.SetLineColor(kBlue)
-	ratioBE.SetMarkerColor(kRed)
-	ratioBE18.SetMarkerColor(kBlue)
+	canv = TCanvas("c1","c1",800,1200)
 
-	ratioPad.DrawFrame(0,0.5,3100,1.5,";;ratio")
+	plotPad = TPad("plotPad","plotPad",0,0.,1,1)
+	# ~ ratioPad = TPad("ratioPad","ratioPad",0,0.,1,0.3)
+	style = setTDRStyle()
+	gStyle.SetOptStat(0)
+	plotPad.UseCurrentStyle()
+	# ~ ratioPad.UseCurrentStyle()
+	plotPad.Draw()	
+	# ~ ratioPad.Draw()	
+	plotPad.cd()
+	plotPad.cd()
+	plotPad.SetGrid()
+	gStyle.SetTitleXOffset(1.45)
+	gStyle.SetTitleYOffset(1.55)
 
-	l = TLine(0,1,3100,1)
-	l.SetLineStyle(kDashed)
-	l.Draw()
+	xMax = 0.15
+	if trackType == "Inner":
+		xMax = 0.3
+	if trackType == "Outer":
+		xMax = 0.5
 
-	ratioBE.Draw("samepe")
-	ratioBE18.Draw("samepe")
+	plotPad.DrawFrame(0,0,2000,xMax,";p_{T} [GeV]; p_{T} resolution [%]")
+
+	graph2018B.Draw("samepe")
+	# ~ graph2018O.Draw("samepe")
+	graph2018E.Draw("samepe")
+	graph2018B.SetLineColor(kRed)
+	graph2018B.SetMarkerColor(kRed)
+	graph2018O.SetLineColor(kGreen)
+	graph2018O.SetMarkerColor(kGreen)
+	graph2018E.SetLineColor(kBlue)
+	graph2018E.SetMarkerColor(kBlue)
+
+	latex = TLatex()
+	latex.SetTextFont(42)
+	latex.SetTextAlign(31)
+	latex.SetTextSize(0.04)
+	latex.SetNDC(True)
+	latexCMS = TLatex()
+	latexCMS.SetTextFont(61)
+	latexCMS.SetTextSize(0.055)
+	latexCMS.SetNDC(True)
+	latexCMSExtra = TLatex()
+	latexCMSExtra.SetTextFont(52)
+	latexCMSExtra.SetTextSize(0.03)
+	latexCMSExtra.SetNDC(True) 
+
+	latex.DrawLatex(0.95, 0.96, "(13 TeV)")
+
+	cmsExtra = "#splitline{Preliminary}{}"
+	latexCMS.DrawLatex(0.19,0.88,"CMS")
+	if "Simulation" in cmsExtra:
+		yLabelPos = 0.81	
+	else:
+		yLabelPos = 0.84	
+
+	latexCMSExtra.DrawLatex(0.19,yLabelPos,"%s"%(cmsExtra))			
 
 
-	canv.Print("PtResolutionCompare_%s_BE.pdf"%trackType)
+	leg = TLegend(0.52, 0.76, 0.95, 0.91,"%s 2018"%trackType,"brNDC")
+	leg.SetFillColor(10)
+	leg.SetFillStyle(0)
+	leg.SetLineColor(10)
+	leg.SetShadowColor(0)
+	leg.SetBorderSize(1)		
+	leg.AddEntry(graph2018B,"Barrel","l")
+	# ~ leg.AddEntry(graph2018O,"Overlap","l")
+	leg.AddEntry(graph2018E,"Endcap","l")
+
+	leg.Draw()
+
+	plotPad.RedrawAxis()
+
+
+	canv.Print("PtResolutionCompare_%s_2018.pdf"%trackType)
+	canv.Print("PtResolutionCompare_%s_2018.root"%trackType)
+	
 
 
 tracks = ["Inner","Outer","Global","TPFMS","Picky","DYT","TunePNew"]

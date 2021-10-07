@@ -14,7 +14,7 @@ sys.argv = [ '-b-' ]
 from ROOT import TF1, TCanvas, gROOT, gStyle, TFile, TH2F, TH1, kFALSE, TH1D, gSystem, RooWorkspace, RooRealVar, RooCmdArg, RooDataHist, RooArgList, TPad, TLegend, TLatex, TGraphAsymmErrors, TGraph, TGraphErrors, kBlack, kRed, kBlue, TLine
 from ROOT import RooDataHist, RooBreitWigner, RooFFTConvPdf, RooFit
 import ROOT
-from ROOT import *
+# ~ from ROOT import *
 gROOT.SetBatch(True)
 sys.argv = oldargv
 
@@ -28,19 +28,13 @@ xLow = 75
 xHigh = 105
 
 
+
 sampleLists  = {
 
-	"2016Inclusive":["ana_datamc_DYInclusive2016.root"],
 	"2017Inclusive":["ana_datamc_DYInclusive2017.root"],
-	"2016MassBinned":["dileptonAna_resolution_2016_dy50to120.root","dileptonAna_resolution_2016_dy120to200.root","dileptonAna_resolution_2016_dy200to400.root","dileptonAna_resolution_2016_dy400to800.root","dileptonAna_resolution_2016_dy800to1400.root","dileptonAna_resolution_2016_dy1400to2300.root","dileptonAna_resolution_2016_dy2300to3500.root","dileptonAna_resolution_2016_dy3500to4500.root","dileptonAna_resolution_2016_dy4500to6000.root","dileptonAna_resolution_2016_dy6000toInf.root"],
-	"2017MassBinned":["dileptonAna_resolution_dy50to120_2017.root","dileptonAna_resolution_dy120to200_2017.root","dileptonAna_resolution_dy200to400_2017.root","dileptonAna_resolution_dy400to800_2017.root","dileptonAna_resolution_dy800to1400_2017.root","dileptonAna_resolution_dy1400to2300_2017.root","dileptonAna_resolution_dy2300to3500_2017.root","dileptonAna_resolution_dy3500to4500_2017.root","dileptonAna_resolution_dy4500to6000_2017.root","dileptonAna_resolution_dy6000toInf_2017.root"],
-	"2018MassBinned":["dileptonAna_resolution_2018_dy50to120.root","dileptonAna_resolution_2018_dy120to200.root","dileptonAna_resolution_2018_dy200to400.root","dileptonAna_resolution_2018_dy400to800.root","dileptonAna_resolution_2018_dy800to1400.root","dileptonAna_resolution_2017_dy1400to2300.root","dileptonAna_resolution_2018_dy2300to3500.root","dileptonAna_resolution_2017_dy3500to4500.root","dileptonAna_resolution_2018_dy4500to6000.root","dileptonAna_resolution_2017_dy6000toInf.root"],
-	"2016PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_2016_dyPt50To100.root","dileptonAna_resolution_2016_dyPt100To250.root","dileptonAna_resolution_2016_dyPt250To400.root","dileptonAna_resolution_2016_dyPt400To600.root","dileptonAna_resolution_2016_dyPt650ToInf.root"],
-	"2017PtBinned":[#"dileptonAna_resolution_2016_dyInclusive50.root",
-"dileptonAna_resolution_dyPt50To150_1Jet_2017.root","dileptonAna_resolution_dyPt50To150_2Jets_2017.root","dileptonAna_resolution_dyPt150To250_1Jet_2017.root","dileptonAna_resolution_dyPt150To250_2Jets_2017.root","dileptonAna_resolution_dyPt250To400_1Jet_2017.root","dileptonAna_resolution_dyPt250To400_2Jets_2017.root","dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root","dileptonAna_resolution_dy_3Jets_2017.root","dileptonAna_resolution_dy_4Jets_2017.root"],
-#	"2017PtBinned":["dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root"]
-	"2018PtBinned":["dyPt150to250_1Jets_2018.root", "dyPt250to400_1Jets_2018.root", "dyPt400toInf_1Jets_2018.root", "dyPt50to150_1Jets_2018.root", "dyPt_3Jets_2018.root", "dyPt150to250_2Jets_2018.root", "dyPt250to400_2Jets_2018.root", "dyPt400toInf_2Jets_2018.root", "dyPt50to150_2Jets_2018.root", "dyPt_4Jets_2018.root"],
-
+	"2017MassBinned":["dileptonAna_resolution_dy50to120_UL2017.root","dileptonAna_resolution_dy120to200_UL2017.root","dileptonAna_resolution_dy200to400_UL2017.root","dileptonAna_resolution_dy400to800_UL2017.root","dileptonAna_resolution_dy800to1400_UL2017.root","dileptonAna_resolution_dy1400to2300_UL2017.root","dileptonAna_resolution_dy2300to3500_UL2017.root","dileptonAna_resolution_dy3500to4500_UL2017.root","dileptonAna_resolution_dy4500to6000_UL2017.root","dileptonAna_resolution_dy6000toInf_UL2017.root"],
+	"2017PtBinned":["dileptonAna_resolution_dyInclusive_UL2017.root","dileptonAna_resolution_dyPt50To100_UL2017.root","dileptonAna_resolution_dyPt100To250_UL2017.root","dileptonAna_resolution_dyPt250To400_UL2017.root","dileptonAna_resolution_dyPt400To650_UL2017.root","dileptonAna_resolution_dyPt650ToInf_UL2017.root"],
+	"2018PtBinned":["dileptonAna_resolution_2018_dyInclusive_UL2018.root","dileptonAna_resolution_2018_dyPt50To100_UL2018.root","dileptonAna_resolution_2018_dyPt100To250_UL2018.root","dileptonAna_resolution_2018_dyPt250To400_UL2018.root","dileptonAna_resolution_2018_dyPt400To650_UL2018.root","dileptonAna_resolution_2018_dyPt650ToInf_UL2018.root"]
 }
 
 xSecs = {
@@ -49,11 +43,12 @@ xSecs = {
 	"2017Inclusive": [ 1921.8 ],
 	"2016MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2017MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
+	"2018MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2016PtBinned": [1921.8,363.81428,84.014804,3.228256512,0.436041144,0.040981055],
-	"2017PtBinned": [1921.8,316.6,169.6,9.543,15.65,1.098,2.737,0.1193,0.4477,111.5,44.03],
-#	"2017PtBinned": [2.536,2.536]	
-	"2018PtBinned": [9.543, 1.098, 0.1193, 316.6, 111.5, 15.65, 2.737, 0.4477, 169.6, 44.03],
-}#    
+	"2017PtBinned": [6077.22,363.81428,84.014804,3.228256512,0.436041144,0.040981055],
+	"2018PtBinned": [6077.22,363.81428,84.014804,3.228256512,0.436041144,0.040981055]	
+
+}#  
 #    resBB.SetMarkerStyle(22)
 #    resBB.SetMarkerColor(kRed)
 #    resBB.SetLineColor(kRed)
@@ -134,6 +129,7 @@ def loadHistos(inputdata,inputMC,region,weights,weights2,trackType,mcIsData,data
 	
 	reg = ""
 	if   ("BB" in region or "barrel" in region):  reg = "_BB"
+	elif ("BE_new" in region or "endcap" in region):  reg = "_BE_neweta"
 	elif ("BE" in region or "endcap" in region):  reg = "_BE"
 	
 	if not dataIsMC:
@@ -217,17 +213,17 @@ def loadHistos(inputdata,inputMC,region,weights,weights2,trackType,mcIsData,data
 		#~ mc  [i].Rebin(1)
 		
 		if (data[i].Integral() < 1500): 
-			data[i].Rebin(6)
+			data[i].Rebin(2)
 		elif (data[i].Integral() < 2500): 
-			data[i].Rebin(4)
+			data[i].Rebin(2)
 		else:
 			data[i].Rebin(rebinFactor)
 
 
 		if (mc[i].Integral() < 1500): 
-			mc[i].Rebin(6)
+			mc[i].Rebin(2)
 		elif (mc[i].Integral() < 2500): 
-			mc[i].Rebin(4)
+			mc[i].Rebin(2)
 		else:
 			mc  [i].Rebin(rebinFactor)
 
@@ -275,9 +271,9 @@ def doFit(hist,output,rap="BB",flavour="DATA",trackType="TunePNew",funct="double
 
 	return meanList,meanListe,sig,sige, nChi2	
 	
-def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataIsMC):
+def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataIsMC,year):
 	style = setTDRStyle()
-	
+	print (data)
 	pt_e = [0 for x in range(len(data))]
 	pt_x = [0 for x in range(len(data))]
 	for i,pt in enumerate(pt_x):
@@ -312,13 +308,16 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	pklFile.close()
 	
 	
-	c2 = TCanvas("c2","c2",700,700)
+	c2 = TCanvas("c2","c2",800,800)
 	c2.cd()
 
 	# Upper plot will be in pad1
-	pad1 = TPad("pad1", "pad1", 0, 0.3, 1, 1.0)
-	pad1.SetGrid()        # Vertical grid
-	pad1.SetBottomMargin(0.1)
+	pad1 = TPad("pad1", "pad1", 0.01, 0.01, 0.99, 0.99)
+	# ~ pad1.SetGrid()        # Vertical grid
+	pad1.SetTopMargin(0.05)
+	pad1.SetLeftMargin(0.13)
+	pad1.SetRightMargin(0.045)
+	pad1.SetBottomMargin(0.3)
 	pad1.Draw()             # Draw the upper pad: pad1
 	pad1.cd()               # pad1 becomes the current pad
 	pad1.SetTicks()
@@ -339,29 +338,40 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 			ratio   .SetPoint(i,pt,da_sig[i]/mc_sig[i])
 			ratio   .SetPointError(i,pt_e[i],(da_sig[i]/mc_sig[i])*math.sqrt((da_sige[i]/da_sig[i])**2+(mc_sige[i]/mc_sig[i])**2))
 	res_data.SetMarkerStyle(22)
+	res_data.SetMarkerSize(2)
 	res_data.SetMarkerColor(kBlack)
 	res_data.SetLineColor(kBlack)
+	res_data.SetLineWidth(2)
 	res_data.SetFillColor(0)
 	res_data.SetTitle("Dimuon mass resolution vs pT for %s tracks"%trackType)
-	res_data.GetYaxis().SetTitle("Mass resolution at Z peak [GeV]")
-	res_data.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) [GeV]")
-	res_data.GetYaxis().SetTitleOffset(1.2)
+	res_data.GetYaxis().SetTitle("Mass resolution at Z peak (GeV)")
+	# ~ res_data.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) [GeV]")
+	res_data.GetYaxis().SetTitleFont(42)
+	res_data.GetYaxis().SetTitleSize(0.05)
+	res_data.GetYaxis().SetTitleOffset(1.35)
+	res_data.GetYaxis().SetLabelFont(42)
+	res_data.GetYaxis().SetLabelSize(0.038)
 	res_data.GetYaxis().SetRangeUser(0.,6.)
+	res_data.GetXaxis().SetTitleSize(0.0)
+	res_data.GetXaxis().SetLabelSize(0.0)
 	if trackType == "Outer":
 		res_data.GetYaxis().SetRangeUser(1.,20.)
 	res_data.GetXaxis().SetRangeUser(ptbins[0],ptbins[len(ptda)])
 	res_data.Draw("AP E0")
 	res_mc.SetMarkerStyle(22)
+	res_mc.SetMarkerSize(2)
 	res_mc.SetMarkerColor(kRed)
 	res_mc.SetLineColor(kRed)
+	res_mc.SetLineWidth(2)
 	res_mc.SetFillColor(0)
 	res_mc.SetTitle("Dimuon mass resolution vs pT for %s tracks"%trackType)
-	res_mc.GetYaxis().SetTitle("Mass resolution at Z peak [GeV]")
-	res_mc.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) [GeV]")
+	res_mc.GetYaxis().SetTitle("Mass resolution at Z peak (GeV)")
+	res_mc.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) (GeV)")
 	res_mc.GetYaxis().SetTitleOffset(1.5)
 	res_mc.Draw("P E0 SAME")
-	if rapidity == "BB": leg = TLegend(0.25,0.6,0.50,0.80,"both muons |#eta| < 1.2","brNDC")
-	else: leg = TLegend(0.25,0.6,0.5,0.8,"at least one muon |#eta| > 1.2","brNDC")
+	if rapidity == "BB": leg = TLegend(0.5,0.65,0.95,0.90,"Both muons |#eta| < 1.2","brNDC")
+	elif rapidity == "BE": leg = TLegend(0.5,0.65,0.95,0.9,"At least one muon |#eta| > 1.2","brNDC")
+	else: leg = TLegend(0.2,0.65,0.9,0.9,"At least one muon |#eta| > 1.6","brNDC")
 	if mcIsData:
 		leg.AddEntry(res_data,"DATA 2017")
 		leg.AddEntry(res_mc,"DATA 2016")
@@ -369,38 +379,57 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 		leg.AddEntry(res_data,"MC 2017")
 		leg.AddEntry(res_mc,"MC 2016")		
 	else:
-		leg.AddEntry(res_data,"DATA","p")
+		leg.AddEntry(res_data,"Data","p")
 		leg.AddEntry(res_mc,"Simulation")
 	
-	leg.SetTextFont(42)
-	leg.SetBorderSize(0)
-	leg.SetTextSize(.04)
+	leg.SetTextFont(62)
+	leg.SetFillColor(10)
+	leg.SetFillStyle(0)
+	leg.SetLineColor(10)
+	leg.SetShadowColor(0)
+	leg.SetBorderSize(0)	
+	leg.SetMargin(0.15)	
 	leg.Draw("SAME")
 	latex = TLatex()
-	latex.SetTextFont(42)
-	latex.SetTextAlign(31)
-	latex.SetTextSize(0.04)
-	latex.SetNDC(True)
-	latexCMS = TLatex()
-	latexCMS.SetTextFont(61)
-	latexCMS.SetTextSize(0.055/0.7)
-	latexCMS.SetNDC(True)
+	# ~ latex.SetTextFont(42)
+	# ~ latex.SetTextAlign(31)
+	# ~ latex.SetTextSize(0.04)
+	# ~ latex.SetNDC(True)
+	# ~ latexCMS = TLatex()
+	# ~ latexCMS.SetTextFont(62)
+	# ~ latexCMS.SetTextSize(0.04)
+	# ~ latexCMS.SetNDC(True)
 	latexCMSExtra = TLatex()
 	latexCMSExtra.SetTextFont(52)
 	latexCMSExtra.SetTextSize(0.03/0.7)
 	latexCMSExtra.SetNDC(True)
 	
-	latex.DrawLatex(0.95, 0.96, "(13 TeV)")
+	# ~ if '2016' in year:
+		# ~ latex.DrawLatex(0.95, 0.96, "2016, 36.3 fb^{-1} (13 TeV)")
+	# ~ elif '2017' in year:	
+		# ~ latex.DrawLatex(0.95, 0.96, "2017, 42.1 fb^{-1} (13 TeV)")
+	# ~ else:	
+		# ~ latex.DrawLatex(0.95, 0.96, "2018, 61.3 fb^{-1} (13 TeV)")
+	if '2016' in year:
+		latex.DrawLatexNDC(0.50, 0.96, "#scale[0.8]{#font[42]{       2016, 36.3 fb^{-1} (13 TeV)}}")
+	elif '2017' in year:	
+		latex.DrawLatexNDC(0.50, 0.96, "#scale[0.8]{#font[42]{       2017, 42.1 fb^{-1} (13 TeV)}}")
+	else:	
+		latex.DrawLatexNDC(0.50, 0.96, "#scale[0.8]{#font[42]{       2018, 61.3 fb^{-1} (13 TeV)}}")
 	
-	cmsExtra = "Preliminary" 
-	latexCMS.DrawLatex(0.78,0.88,"CMS")
-	yLabelPos = 0.84
-	latexCMSExtra.DrawLatex(0.78,yLabelPos,"%s"%(cmsExtra))
+	# ~ cmsExtra = "Preliminary" 
+	# ~ latexCMS.DrawLatex(0.15,0.96,"CMS")
+	latex.DrawLatexNDC(0.13, 0.96, "#font[62]{CMS}")
+	# ~ yLabelPos = 0.84
+	# ~ latexCMSExtra.DrawLatex(0.78,yLabelPos,"%s"%(cmsExtra))
 	c2.cd()          # Go back to the main canvas before defining pad2
-	pad2 = TPad("pad2", "pad2",0, 0.1, 1, 0.30)    
+	pad2 = TPad("pad2", "pad2",0.01, 0.01, 0.99, 0.29)    
 	pad2.SetTopMargin(0)
-	pad2.SetBottomMargin(0.3)
-	pad2.SetGrid()
+	pad2.SetTopMargin(0.05)
+	pad2.SetLeftMargin(0.13)
+	pad2.SetRightMargin(0.045)
+	pad2.SetBottomMargin(0.4)
+	# ~ pad2.SetGrid()
 	pad2.Draw()
 	pad2.cd()
 	pad2.SetTicks()
@@ -408,27 +437,38 @@ def drawMassRes(data,mc,output,rapidity,ptda,ptmc,trackType,funct,mcIsData,dataI
 	ratio.SetFillColor(kBlue-4 )
 	ratio.SetTitle("")
 	ratio.GetYaxis().SetTitle("Data/MC")
+	ratio.GetXaxis().SetNoExponent(0)
+	ratio.GetXaxis().SetTitleFont(42)
+	ratio.GetXaxis().SetTitleOffset(0.85)
+	ratio.GetXaxis().SetTitleSize(0.2)
+	ratio.GetXaxis().SetLabelColor(1)
+	ratio.GetXaxis().SetLabelOffset(0.01)
+	ratio.GetXaxis().SetLabelFont(42)
+	ratio.GetXaxis().SetLabelSize(0.17)		
 	if mcIsData:
 		ratio.GetYaxis().SetTitle("Data 2017 / Data 2016")
 	elif dataIsMC:
 		ratio.GetYaxis().SetTitle("MC 2017 / MC 2016")
-	ratio.GetXaxis().SetTitle("p_{T} (#mu^{#pm}) [GeV]")
+	ratio.GetXaxis().SetTitle("p_{T} (\mu^{\pm}) (GeV)")
 	ratio.GetYaxis().SetRangeUser(0.5,1.5)
 	ratio.GetXaxis().SetRangeUser(ptbins[0],ptbins[len(ptda)])
-	ratio.GetYaxis().SetTitleOffset(0.50)
-	ratio.GetYaxis().SetTitleSize(0.14)
+	ratio.GetYaxis().SetTitleOffset(0.55)
+	ratio.GetYaxis().SetTitleSize(0.12)
+	ratio.GetYaxis().SetTitleFont(42)
 	ratio.GetYaxis().SetLabelSize(0.14)    
-	ratio.GetYaxis().SetNdivisions(506)    
-	ratio.GetXaxis().SetTitleSize(0.12)
-	ratio.GetXaxis().SetTitleOffset(1.2)
-	ratio.GetXaxis().SetLabelSize(0.20)
+	ratio.GetYaxis().SetLabelOffset(0.007)    
+	ratio.GetYaxis().SetLabelFont(42)    
+	ratio.GetYaxis().SetNdivisions(505)       
 	ratio.Draw("A P E2")
 	pad2.Update()
+
 	line = TLine(ptbins[0],1,ptbins[len(ptda)],1)
 
 	line.SetLineColor(kBlue+1)
 	line.SetLineWidth(2)
 	line.Draw()
+	pad1.RedrawAxis()
+
 	saveas = "/MassResolutionVsPt_%s_%s" %(trackType,rapidity)
 	c2.SaveAs(output+saveas+".png")
 	c2.SaveAs(output+saveas+".pdf")
@@ -447,9 +487,11 @@ def makeMassRes(inputDATA,inputMC,output,weights,weights2,trackType,funct,mcIsDa
 	
 	(data_B,mc_B,ptdaB,ptmcB) = loadHistos(inputDATA,inputMC,"BB",weights,weights2,trackType,mcIsData,dataIsMC)
 	(data_E,mc_E,ptdaE,ptmcE) = loadHistos(inputDATA,inputMC,"BE",weights,weights2,trackType,mcIsData,dataIsMC)
+	# ~ (data_E2,mc_E2,ptdaE2,ptmcE2) = loadHistos(inputDATA,inputMC,"BE_neweta",weights,weights2,trackType,mcIsData,dataIsMC)
 
-	drawMassRes(data_B,mc_B,output,"BB",ptdaB,ptmcB,trackType,funct,mcIsData,dataIsMC)
-	drawMassRes(data_E,mc_E,output,"BE",ptdaE,ptmcE,trackType,funct,mcIsData,dataIsMC)
+	drawMassRes(data_B,mc_B,output,"BB",ptdaB,ptmcB,trackType,funct,mcIsData,dataIsMC,inputDATA)
+	drawMassRes(data_E,mc_E,output,"BE",ptdaE,ptmcE,trackType,funct,mcIsData,dataIsMC,inputDATA)
+	# ~ drawMassRes(data_E2,mc_E2,output,"BE16",ptdaE,ptmcE,trackType,funct,mcIsData,dataIsMC,inputDATA)
 	
 	
 		 

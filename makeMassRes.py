@@ -40,14 +40,9 @@ def makeRatioGraph(f1,f2,xMin,xMax):
 
 sampleLists  = {
 
-	"2016Inclusive":["ana_datamc_DYInclusive2016.root"],
 	"2017Inclusive":["ana_datamc_DYInclusive2017.root"],
-	"2016MassBinned":["dileptonAna_resolution_2016_dy50to120.root","dileptonAna_resolution_2016_dy120to200.root","dileptonAna_resolution_2016_dy200to400.root","dileptonAna_resolution_2016_dy400to800.root","dileptonAna_resolution_2016_dy800to1400.root","dileptonAna_resolution_2016_dy1400to2300.root","dileptonAna_resolution_2016_dy2300to3500.root","dileptonAna_resolution_2016_dy3500to4500.root","dileptonAna_resolution_2016_dy4500to6000.root","dileptonAna_resolution_2016_dy6000toInf.root"],
-	"2017MassBinned":["dileptonAna_resolution_dy50to120_2017.root","dileptonAna_resolution_dy120to200_2017.root","dileptonAna_resolution_dy200to400_2017.root","dileptonAna_resolution_dy400to800_2017.root","dileptonAna_resolution_dy800to1400_2017.root","dileptonAna_resolution_dy1400to2300_2017.root","dileptonAna_resolution_dy2300to3500_2017.root","dileptonAna_resolution_dy3500to4500_2017.root","dileptonAna_resolution_dy4500to6000_2017.root","dileptonAna_resolution_dy6000toInf_2017.root"],
-	"2018MassBinned":["dileptonAna_resolution_2018_dy50to120.root","dileptonAna_resolution_2018_dy120to200.root","dileptonAna_resolution_2018_dy200to400.root","dileptonAna_resolution_2018_dy400to800.root","dileptonAna_resolution_2018_dy800to1400.root","dileptonAna_resolution_2018_dy1400to2300.root","dileptonAna_resolution_2018_dy2300to3500.root","dileptonAna_resolution_2018_dy3500to4500.root","dileptonAna_resolution_2018_dy4500to6000.root","dileptonAna_resolution_2018_dy6000toInf.root"],
-	"2016PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_2016_dyPt50To100.root","dileptonAna_resolution_2016_dyPt100To250.root","dileptonAna_resolution_2016_dyPt250To400.root","dileptonAna_resolution_2016_dyPt400To600.root","dileptonAna_resolution_2016_dyPt650ToInf.root"],
-	"2017PtBinned":["dileptonAna_resolution_2016_dyInclusive50.root","dileptonAna_resolution_dyPt50To150_1Jet_2017.root","dileptonAna_resolution_dyPt50To150_2Jets_2017.root","dileptonAna_resolution_dyPt150To250_1Jet_2017.root","dileptonAna_resolution_dyPt150To250_2Jets_2017.root","dileptonAna_resolution_dyPt250To400_1Jet_2017.root","dileptonAna_resolution_dyPt250To400_2Jets_2017.root","dileptonAna_resolution_dyPt400ToInf_1Jet_2017.root","dileptonAna_resolution_dyPt400ToInf_2Jets_2017.root","dileptonAna_resolution_dy_3Jets_2017.root","dileptonAna_resolution_dy_4Jets_2017.root"],
-        "2018PtBinned":["dyPt150to250_1Jets_2018.root", "dyPt250to400_1Jets_2018.root", "dyPt400toInf_1Jets_2018.root", "dyPt50to150_1Jets_2018.root", "dyPt_3Jets_2018.root", "dyPt150to250_2Jets_2018.root", "dyPt250to400_2Jets_2018.root", "dyPt400toInf_2Jets_2018.root", "dyPt50to150_2Jets_2018.root", "dyPt_4Jets_2018.root"],	
+	"2017MassBinned":["dileptonAna_resolution_dy50to120_UL2017.root","dileptonAna_resolution_dy120to200_UL2017.root","dileptonAna_resolution_dy200to400_UL2017.root","dileptonAna_resolution_dy400to800_UL2017.root","dileptonAna_resolution_dy800to1400_UL2017.root","dileptonAna_resolution_dy1400to2300_UL2017.root","dileptonAna_resolution_dy2300to3500_UL2017.root","dileptonAna_resolution_dy3500to4500_UL2017.root","dileptonAna_resolution_dy4500to6000_UL2017.root","dileptonAna_resolution_dy6000toInf_UL2017.root"],
+	"2017PtBinned":["dileptonAna_resolution_dyInclusive_UL2017.root","dileptonAna_resolution_dyPt150ToInf_UL2017.root"]
 }
 
 xSecs = {
@@ -58,10 +53,9 @@ xSecs = {
 	"2017MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2018MassBinned": [1975,19.32,2.731,0.241,1.678e-2,1.39e-3,0.8948e-4,0.4135e-5,4.56e-7,2.06e-8],
 	"2016PtBinned": [1921.8,363.81428,84.014804,3.228256512,0.436041144,0.040981055],
-	"2017PtBinned": [1921.8,316.6,169.6,9.543,15.65,1.098,2.737,0.1193,0.4477,111.5,44.03],
-        "2018PtBinned": [9.543, 1.098, 0.1193, 316.6, 111.5, 15.65, 2.737, 0.4477, 169.6, 44.03],
+	"2017PtBinned": [1921.8,79.1]	
 
-}
+}#   
 
 def getBinRange(histo,mlow,mhigh):
 	xmin =  0
@@ -483,10 +477,10 @@ def drawMassResGeneric(hist,output,rapidity,funct="cruijff",trackType="TunePNew"
 				fun.SetParameters(0.,1E-5,-1.E-8,2E-12,-2E-16)
 				fun.SetParLimits(1, 1.0E-6, 1.0E-4)
 				fun.SetParLimits(2,-1.0E-7,-1.0E-9)
-		                fun.SetParLimits(4,-1.5E-16,1.0E-20)
+				fun.SetParLimits(4,-1.5E-16,1.0E-20)
 				#fun.FixParameter(3,0.)
 #                fun.FixParameter(3,0.)
-                		#fun.FixParameter(4,0.)
+						#fun.FixParameter(4,0.)
 			elif "AlphaR" in f.GetName(): 
 				fun.SetParameters(0.25, 1E-6, -1.E-9, 1.E-12, -1.E-16)
 				fun.SetParLimits(1, 1E-7, 1E-5)
