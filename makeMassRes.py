@@ -41,7 +41,7 @@ def makeRatioGraph(f1,f2,xMin,xMax):
 sampleLists  = {
 
 	"2017Inclusive":["ana_datamc_DYInclusive2017.root"],
-	"2017MassBinned":["dileptonAna_resolution_dy50to120_UL2017.root","dileptonAna_resolution_dy120to200_UL2017.root","dileptonAna_resolution_dy200to400_UL2017.root","dileptonAna_resolution_dy400to800_UL2017.root","dileptonAna_resolution_dy800to1400_UL2017.root","dileptonAna_resolution_dy1400to2300_UL2017.root","dileptonAna_resolution_dy2300to3500_UL2017.root","dileptonAna_resolution_dy3500to4500_UL2017.root","dileptonAna_resolution_dy4500to6000_UL2017.root","dileptonAna_resolution_dy6000toInf_UL2017.root"],
+	"2017MassBinned":["dileptonAna_resolution_dy50to120_2017.root","dileptonAna_resolution_dy120to200_2017.root","dileptonAna_resolution_dy200to400_2017.root","dileptonAna_resolution_dy400to800_2017.root","dileptonAna_resolution_dy800to1400_2017.root","dileptonAna_resolution_dy1400to2300_2017.root","dileptonAna_resolution_dy2300to3500_2017.root","dileptonAna_resolution_dy3500to4500_2017.root","dileptonAna_resolution_dy4500to6000_2017.root","dileptonAna_resolution_dy6000toInf_2017.root"],
 	"2017PtBinned":["dileptonAna_resolution_dyInclusive_UL2017.root","dileptonAna_resolution_dyPt150ToInf_UL2017.root"]
 }
 
